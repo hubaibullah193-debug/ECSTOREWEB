@@ -197,6 +197,8 @@ export const usersRelations = relations(users, ({ many }) => ({
   sessions: many(sessions),
   accounts: many(accounts),
   orders: many(orders),
+  productReviews: many(productReviews),
+  orderFeedback: many(orderFeedback),
 }));
 
 export const sessionsRelations = relations(sessions, ({ one }) => ({
@@ -204,6 +206,10 @@ export const sessionsRelations = relations(sessions, ({ one }) => ({
     fields: [sessions.userId],
     references: [users.id],
   }),
+}));
+
+export const productsRelations = relations(products, ({ many }) => ({
+  reviews: many(productReviews),
 }));
 
 export const accountsRelations = relations(accounts, ({ one }) => ({
@@ -220,6 +226,8 @@ export const ordersRelations = relations(orders, ({ one, many }) => ({
   }),
   items: many(orderItems),
   tracking: many(orderTracking),
+  productReviews: many(productReviews),
+  feedback: many(orderFeedback),
 }));
 
 export const orderItemsRelations = relations(orderItems, ({ one }) => ({
