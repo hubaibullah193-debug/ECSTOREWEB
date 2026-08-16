@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import styles from "../auth.module.css";
 
 export default function ResetPage() {
   const [email, setEmail] = useState("");
@@ -35,16 +36,16 @@ export default function ResetPage() {
 
   if (success) {
     return (
-      <div className="space-y-[var(--space-6)] text-center">
-        <div>
-          <h1 className="text-2xl font-serif font-bold">Check your email</h1>
-          <p className="text-sm text-gray-600 mt-[var(--space-2)]">
+      <div className={styles.authContainer}>
+        <div className={styles.header}>
+          <h1 className={styles.title}>Check your email</h1>
+          <p className={styles.subtitle}>
             We've sent a password reset link to {email}
           </p>
         </div>
         <Link
           href="/auth/login"
-          className="inline-block text-[var(--color-accent)] font-medium hover:underline"
+          className={styles.link}
         >
           Back to login
         </Link>
@@ -53,23 +54,23 @@ export default function ResetPage() {
   }
 
   return (
-    <div className="space-y-[var(--space-6)]">
-      <div className="text-center space-y-[var(--space-2)]">
-        <h1 className="text-2xl font-serif font-bold">Reset Password</h1>
-        <p className="text-sm text-gray-600">
+    <div className={styles.authContainer}>
+      <div className={styles.header}>
+        <h1 className={styles.title}>Reset Password</h1>
+        <p className={styles.subtitle}>
           Enter your email to receive a reset link
         </p>
       </div>
 
-      <form onSubmit={handleSubmit} className="space-y-[var(--space-4)]">
+      <form onSubmit={handleSubmit} className={styles.form}>
         {error && (
-          <div className="p-[var(--space-3)] bg-red-50 border border-red-200 rounded text-red-700 text-sm">
+          <div className={styles.errorAlert}>
             {error}
           </div>
         )}
 
-        <div>
-          <label htmlFor="email" className="block text-sm font-medium mb-[var(--space-2)]">
+        <div className={styles.formGroup}>
+          <label htmlFor="email" className={styles.label}>
             Email
           </label>
           <input
@@ -78,7 +79,7 @@ export default function ResetPage() {
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             required
-            className="w-full px-[var(--space-3)] py-[var(--space-2)] border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-[var(--color-accent)]"
+            className={styles.input}
             disabled={loading}
           />
         </div>
@@ -86,14 +87,14 @@ export default function ResetPage() {
         <button
           type="submit"
           disabled={loading}
-          className="w-full py-[var(--space-3)] bg-[var(--color-accent)] text-white rounded font-medium hover:opacity-90 disabled:opacity-50 transition"
+          className={styles.submitButton}
         >
           {loading ? "Sending..." : "Send Reset Link"}
         </button>
       </form>
 
-      <div className="text-center text-sm">
-        <Link href="/auth/login" className="text-[var(--color-accent)] font-medium hover:underline">
+      <div className={styles.footer}>
+        <Link href="/auth/login" className={styles.link}>
           Back to login
         </Link>
       </div>
