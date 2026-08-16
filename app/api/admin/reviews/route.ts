@@ -1,12 +1,13 @@
 import { getDb } from '@/lib/db';
 import { productReviews } from '@/db/schema';
 import { eq } from 'drizzle-orm';
-import { auth } from '@/lib/auth';
+import { getAuth } from '@/lib/auth';
 import { headers } from 'next/headers';
 
 export async function GET(req: Request) {
   const db = getDb();
   const hdrs = await headers();
+  const auth = getAuth();
   const session = await auth.api.getSession({ headers: hdrs });
 
   if (!session?.user?.id) {

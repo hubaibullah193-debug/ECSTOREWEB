@@ -1,0 +1,221 @@
+/* Home page styles using design tokens */
+
+.hero {
+  background: linear-gradient(to right, var(--color-accent), var(--color-accent-hover));
+  color: var(--color-surface);
+  padding: var(--space-20) var(--space-4);
+}
+
+.heroContent {
+  max-width: 1200px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.heroTitle {
+  font-family: var(--font-display);
+  font-size: var(--text-48);
+  font-weight: 700;
+  margin-bottom: var(--space-4);
+  line-height: 1.2;
+}
+
+@media (max-width: 768px) {
+  .heroTitle {
+    font-size: var(--text-32);
+  }
+}
+
+.heroSubtitle {
+  font-family: var(--font-body);
+  font-size: var(--text-20);
+  margin-bottom: var(--space-8);
+  opacity: 0.9;
+}
+
+@media (max-width: 768px) {
+  .heroSubtitle {
+    font-size: var(--text-16);
+  }
+}
+
+.ctaButton {
+  display: inline-block;
+  padding: var(--space-3) var(--space-8);
+  background-color: var(--color-surface);
+  color: var(--color-accent);
+  text-decoration: none;
+  border-radius: var(--radius-sm);
+  font-weight: 600;
+  font-size: var(--text-16);
+  transition: background-color var(--dur-fast) var(--ease-out);
+}
+
+.ctaButton:hover {
+  background-color: var(--color-paper-3);
+}
+
+.featuredSection {
+  padding: var(--space-20) var(--space-4);
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.sectionTitle {
+  font-family: var(--font-display);
+  font-size: var(--text-40);
+  font-weight: 700;
+  margin-bottom: var(--space-12);
+  text-align: center;
+  color: var(--color-ink);
+}
+
+.productGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: var(--space-8);
+}
+
+.productCard {
+  display: block;
+  background-color: var(--color-paper);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  transition: box-shadow var(--dur-fast) var(--ease-out);
+  text-decoration: none;
+  color: inherit;
+}
+
+.productCard:hover {
+  box-shadow: var(--shadow-md);
+}
+
+.productImage {
+  aspect-ratio: 1;
+  background-color: var(--color-paper-2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.productImagePlaceholder {
+  color: var(--color-ink-tertiary);
+  font-size: var(--text-14);
+}
+
+.productContent {
+  padding: var(--space-4);
+}
+
+.productCategory {
+  font-size: var(--text-12);
+  color: var(--color-accent);
+  font-weight: 600;
+  margin-bottom: var(--space-1);
+}
+
+.productTitle {
+  font-family: var(--font-display);
+  font-size: var(--text-18);
+  font-weight: 600;
+  margin-bottom: var(--space-2);
+  color: var(--color-ink);
+  transition: color var(--dur-fast) var(--ease-out);
+}
+
+.productCard:hover .productTitle {
+  color: var(--color-accent);
+}
+
+.productDescription {
+  font-size: var(--text-14);
+  color: var(--color-ink-secondary);
+  margin-bottom: var(--space-4);
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.productFooter {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.productPrice {
+  font-family: var(--font-display);
+  font-size: var(--text-24);
+  font-weight: 700;
+  color: var(--color-accent);
+}
+
+.viewButton {
+  padding: var(--space-2) var(--space-4);
+  background-color: var(--color-accent);
+  color: var(--color-surface);
+  border: none;
+  border-radius: var(--radius-sm);
+  font-weight: 600;
+  font-size: var(--text-14);
+  cursor: pointer;
+  transition: background-color var(--dur-fast) var(--ease-out);
+}
+
+.viewButton:hover {
+  background-color: var(--color-accent-hover);
+}
+
+.loadingMessage {
+  text-align: center;
+  padding: var(--space-12) var(--space-4);
+  color: var(--color-ink-secondary);
+}
+
+.ctaSection {
+  background-color: var(--color-paper-2);
+  padding: var(--space-20) var(--space-4);
+}
+
+.ctaSectionContent {
+  max-width: 1200px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.ctaSectionTitle {
+  font-family: var(--font-display);
+  font-size: var(--text-32);
+  font-weight: 700;
+  margin-bottom: var(--space-4);
+  color: var(--color-ink);
+}
+
+.ctaSectionDescription {
+  color: var(--color-ink-secondary);
+  margin-bottom: var(--space-8);
+  max-width: 60ch;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.primaryButton {
+  display: inline-block;
+  padding: var(--space-3) var(--space-8);
+  background-color: var(--color-accent);
+  color: var(--color-surface);
+  text-decoration: none;
+  border-radius: var(--radius-sm);
+  font-weight: 600;
+  font-size: var(--text-16);
+  transition: background-color var(--dur-fast) var(--ease-out);
+}
+
+.primaryButton:hover {
+  background-color: var(--color-accent-hover);
+}

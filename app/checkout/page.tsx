@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { useCart } from '@/lib/hooks/useCart';
+import styles from './checkout.module.css';
 
 export default function CheckoutPage() {
   const router = useRouter();
@@ -32,23 +33,23 @@ export default function CheckoutPage() {
 
   if (!mounted || !isLoaded) {
     return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
-        <p className="text-gray-600">Loading...</p>
+      <div className={styles.loadingContainer}>
+        <p className={styles.loadingMessage}>Loading...</p>
       </div>
     );
   }
 
   if (cart.length === 0) {
     return (
-      <div className="min-h-screen bg-gray-50">
-        <div className="container mx-auto px-4 py-12">
-          <h1 className="text-4xl font-bold text-gray-800 mb-8">Checkout</h1>
+      <div>
+        <div className={styles.container}>
+          <h1 className={styles.title}>Checkout</h1>
 
-          <div className="bg-white rounded-lg border border-gray-200 p-12 text-center">
-            <p className="text-gray-600 mb-8">Your cart is empty</p>
+          <div className={styles.emptyCart}>
+            <p className={styles.emptyMessage}>Your cart is empty</p>
             <Link
               href="/shop"
-              className="inline-block bg-rose-500 text-white px-8 py-3 rounded-lg font-semibold hover:bg-rose-600 transition"
+              className={styles.continuShoppingButton}
             >
               Continue Shopping
             </Link>
@@ -111,35 +112,35 @@ export default function CheckoutPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      <div className="container mx-auto px-4 py-12">
-        <h1 className="text-4xl font-bold text-gray-800 mb-8">Checkout</h1>
+    <div>
+      <div className={styles.container}>
+        <h1 className={styles.title}>Checkout</h1>
 
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        <div className={styles.layout}>
           {/* Checkout Form */}
-          <form onSubmit={handleSubmit} className="lg:col-span-2 space-y-8">
+          <form onSubmit={handleSubmit} className={styles.form}>
             {error && (
-              <div className="bg-red-50 border border-red-200 rounded-lg p-4">
-                <p className="text-red-700">{error}</p>
+              <div className={`${styles.alert} ${styles.errorAlert}`}>
+                <p className={styles.errorText}>{error}</p>
               </div>
             )}
 
             {orderCreated && (
-              <div className="bg-green-50 border border-green-200 rounded-lg p-4">
-                <p className="text-green-700">✓ Order created successfully!</p>
+              <div className={`${styles.alert} ${styles.successAlert}`}>
+                <p className={styles.successText}>✓ Order created successfully!</p>
               </div>
             )}
 
             {/* Shipping Information */}
-            <div className="bg-white border border-gray-200 rounded-lg p-6">
-              <h2 className="text-2xl font-bold text-gray-800 mb-6">
+            <div className={styles.section}>
+              <h2 className={styles.sectionTitle}>
                 Shipping Information
               </h2>
 
-              <div className="space-y-4">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <div>
-                    <label className="block text-sm font-semibold text-gray-700 mb-2">
+              <div className={styles.formGrid}>
+                <div className={styles.formGridTwoCols}>
+                  <div className={styles.formGroup}>
+                    <label className={styles.label}>
                       Full Name *
                     </label>
                     <input
@@ -152,12 +153,12 @@ export default function CheckoutPage() {
                           shippingName: e.target.value,
                         })
                       }
-                      className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-rose-500"
+                      className={styles.input}
                     />
                   </div>
 
-                  <div>
-                    <label className="block text-sm font-semibold text-gray-700 mb-2">
+                  <div className={styles.formGroup}>
+                    <label className={styles.label}>
                       Email Address *
                     </label>
                     <input
@@ -170,13 +171,13 @@ export default function CheckoutPage() {
                           shippingEmail: e.target.value,
                         })
                       }
-                      className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-rose-500"
+                      className={styles.input}
                     />
                   </div>
                 </div>
 
-                <div>
-                  <label className="block text-sm font-semibold text-gray-700 mb-2">
+                <div className={styles.formGroup}>
+                  <label className={styles.label}>
                     Phone Number *
                   </label>
                   <input
@@ -189,12 +190,12 @@ export default function CheckoutPage() {
                         shippingPhone: e.target.value,
                       })
                     }
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-rose-500"
+                    className={styles.input}
                   />
                 </div>
 
-                <div>
-                  <label className="block text-sm font-semibold text-gray-700 mb-2">
+                <div className={styles.formGroup}>
+                  <label className={styles.label}>
                     Address *
                   </label>
                   <input
@@ -207,13 +208,13 @@ export default function CheckoutPage() {
                         shippingAddress: e.target.value,
                       })
                     }
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-rose-500"
+                    className={styles.input}
                   />
                 </div>
 
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                  <div>
-                    <label className="block text-sm font-semibold text-gray-700 mb-2">
+                <div className={styles.formGridThreeCols}>
+                  <div className={styles.formGroup}>
+                    <label className={styles.label}>
                       City *
                     </label>
                     <input
@@ -226,12 +227,12 @@ export default function CheckoutPage() {
                           shippingCity: e.target.value,
                         })
                       }
-                      className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-rose-500"
+                      className={styles.input}
                     />
                   </div>
 
-                  <div>
-                    <label className="block text-sm font-semibold text-gray-700 mb-2">
+                  <div className={styles.formGroup}>
+                    <label className={styles.label}>
                       Province
                     </label>
                     <input
@@ -243,12 +244,12 @@ export default function CheckoutPage() {
                           shippingProvince: e.target.value,
                         })
                       }
-                      className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-rose-500"
+                      className={styles.input}
                     />
                   </div>
 
-                  <div>
-                    <label className="block text-sm font-semibold text-gray-700 mb-2">
+                  <div className={styles.formGroup}>
+                    <label className={styles.label}>
                       Postal Code
                     </label>
                     <input
@@ -260,7 +261,7 @@ export default function CheckoutPage() {
                           shippingPostalCode: e.target.value,
                         })
                       }
-                      className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-rose-500"
+                      className={styles.input}
                     />
                   </div>
                 </div>
@@ -268,13 +269,13 @@ export default function CheckoutPage() {
             </div>
 
             {/* Payment Method */}
-            <div className="bg-white border border-gray-200 rounded-lg p-6">
-              <h2 className="text-2xl font-bold text-gray-800 mb-6">
+            <div className={styles.section}>
+              <h2 className={styles.sectionTitle}>
                 Payment Method
               </h2>
 
-              <div className="space-y-3">
-                <label className="flex items-center p-4 border border-gray-200 rounded-lg cursor-pointer hover:bg-gray-50">
+              <div className={styles.radioGroup}>
+                <label className={styles.radioOption}>
                   <input
                     type="radio"
                     name="paymentMethod"
@@ -286,19 +287,19 @@ export default function CheckoutPage() {
                         paymentMethod: e.target.value as 'cod' | 'jazzcash' | 'easypaisa',
                       })
                     }
-                    className="w-4 h-4 text-rose-500"
+                    className={styles.radioInput}
                   />
-                  <div className="ml-4">
-                    <p className="font-semibold text-gray-800">
+                  <div className={styles.radioContent}>
+                    <p className={styles.radioTitle}>
                       Cash on Delivery (COD)
                     </p>
-                    <p className="text-sm text-gray-600">
+                    <p className={styles.radioDescription}>
                       Pay when you receive your order
                     </p>
                   </div>
                 </label>
 
-                <label className="flex items-center p-4 border border-gray-200 rounded-lg cursor-pointer hover:bg-gray-50">
+                <label className={styles.radioOption}>
                   <input
                     type="radio"
                     name="paymentMethod"
@@ -310,15 +311,15 @@ export default function CheckoutPage() {
                         paymentMethod: e.target.value as 'cod' | 'jazzcash' | 'easypaisa',
                       })
                     }
-                    className="w-4 h-4 text-rose-500"
+                    className={styles.radioInput}
                   />
-                  <div className="ml-4">
-                    <p className="font-semibold text-gray-800">JazzCash</p>
-                    <p className="text-sm text-gray-600">Pay securely with JazzCash</p>
+                  <div className={styles.radioContent}>
+                    <p className={styles.radioTitle}>JazzCash</p>
+                    <p className={styles.radioDescription}>Pay securely with JazzCash</p>
                   </div>
                 </label>
 
-                <label className="flex items-center p-4 border border-gray-200 rounded-lg cursor-pointer hover:bg-gray-50">
+                <label className={styles.radioOption}>
                   <input
                     type="radio"
                     name="paymentMethod"
@@ -330,19 +331,19 @@ export default function CheckoutPage() {
                         paymentMethod: e.target.value as 'cod' | 'jazzcash' | 'easypaisa',
                       })
                     }
-                    className="w-4 h-4 text-rose-500"
+                    className={styles.radioInput}
                   />
-                  <div className="ml-4">
-                    <p className="font-semibold text-gray-800">Easypaisa</p>
-                    <p className="text-sm text-gray-600">Pay securely with Easypaisa</p>
+                  <div className={styles.radioContent}>
+                    <p className={styles.radioTitle}>Easypaisa</p>
+                    <p className={styles.radioDescription}>Pay securely with Easypaisa</p>
                   </div>
                 </label>
               </div>
             </div>
 
             {/* Order Notes */}
-            <div className="bg-white border border-gray-200 rounded-lg p-6">
-              <h2 className="text-2xl font-bold text-gray-800 mb-6">
+            <div className={styles.section}>
+              <h2 className={styles.sectionTitle}>
                 Order Notes (Optional)
               </h2>
               <textarea
@@ -352,22 +353,22 @@ export default function CheckoutPage() {
                 }
                 placeholder="Any special instructions or notes for your order..."
                 rows={4}
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-rose-500"
+                className={styles.textarea}
               />
             </div>
 
             {/* Action Buttons */}
-            <div className="flex gap-4">
+            <div className={styles.actionButtons}>
               <button
                 type="submit"
                 disabled={loading}
-                className="flex-1 bg-rose-500 text-white py-3 rounded-lg font-bold hover:bg-rose-600 transition disabled:opacity-50 disabled:cursor-not-allowed"
+                className={styles.submitButton}
               >
                 {loading ? 'Processing...' : 'Place Order'}
               </button>
               <Link
                 href="/cart"
-                className="flex-1 text-center bg-white text-rose-500 border-2 border-rose-500 py-3 rounded-lg font-semibold hover:bg-rose-50 transition"
+                className={styles.backButton}
               >
                 Back to Cart
               </Link>
@@ -376,38 +377,38 @@ export default function CheckoutPage() {
 
           {/* Order Summary */}
           <div>
-            <div className="bg-white border border-gray-200 rounded-lg p-6 sticky top-4">
-              <h2 className="text-2xl font-bold text-gray-800 mb-6">
+            <div className={styles.orderSummary}>
+              <h2 className={styles.summaryTitle}>
                 Order Summary
               </h2>
 
-              <div className="space-y-3 mb-6 pb-6 border-b border-gray-200">
+              <div className={styles.cartItems}>
                 {cart.map((item) => (
-                  <div key={item.id} className="flex justify-between text-sm">
-                    <span className="text-gray-600">
+                  <div key={item.id} className={styles.cartItem}>
+                    <span className={styles.cartItemName}>
                       {item.name} × {item.quantity}
                     </span>
-                    <span className="font-semibold text-gray-800">
+                    <span className={styles.cartItemPrice}>
                       Rs {(item.price * item.quantity).toFixed(0)}
                     </span>
                   </div>
                 ))}
               </div>
 
-              <div className="space-y-4 mb-6 pb-6 border-b border-gray-200">
-                <div className="flex justify-between text-gray-600">
+              <div className={styles.summaryLines}>
+                <div className={styles.summaryLine}>
                   <span>Subtotal</span>
                   <span>Rs {total.toFixed(0)}</span>
                 </div>
-                <div className="flex justify-between text-gray-600">
+                <div className={styles.summaryLine}>
                   <span>Shipping</span>
                   <span>Free</span>
                 </div>
               </div>
 
-              <div className="flex justify-between items-center">
-                <span className="text-lg font-bold text-gray-800">Total</span>
-                <span className="text-3xl font-bold text-rose-500">
+              <div className={styles.totalLine}>
+                <span className={styles.totalLabel}>Total</span>
+                <span className={styles.totalAmount}>
                   Rs {total.toFixed(0)}
                 </span>
               </div>

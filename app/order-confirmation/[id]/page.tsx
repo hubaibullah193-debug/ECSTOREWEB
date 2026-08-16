@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import { useParams } from 'next/navigation';
 import Link from 'next/link';
 import OrderFeedbackForm from '@/components/OrderFeedbackForm';
+import styles from '../order-confirmation.module.css';
 
 interface OrderData {
   orderId: string;
@@ -42,27 +43,27 @@ export default function OrderConfirmationPage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
-        <p className="text-gray-600">Loading order details...</p>
+      <div className={styles.loadingContainer}>
+        <p className={styles.loadingMessage}>Loading order details...</p>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      <div className="container mx-auto px-4 py-12">
-        <div className="max-w-2xl mx-auto">
+    <div>
+      <div className={styles.container}>
+        <div className={styles.contentWrapper}>
           {/* Success Message */}
-          <div className="bg-white rounded-lg border-2 border-green-500 p-8 text-center mb-8">
-            <div className="text-6xl mb-4">✓</div>
-            <h1 className="text-4xl font-bold text-gray-800 mb-2">
+          <div className={styles.successMessage}>
+            <div className={styles.successIcon}>✓</div>
+            <h1 className={styles.successTitle}>
               Order Confirmed!
             </h1>
-            <p className="text-gray-600 text-lg mb-4">
+            <p className={styles.successSubtitle}>
               Thank you for your purchase. Your order has been successfully placed.
             </p>
             {order && (
-              <p className="text-2xl font-bold text-rose-500">
+              <p className={styles.orderNumber}>
                 Order #{order.orderNumber}
               </p>
             )}
@@ -70,46 +71,46 @@ export default function OrderConfirmationPage() {
 
           {/* Order Details */}
           {order && (
-            <div className="bg-white border border-gray-200 rounded-lg p-8 mb-8">
-              <h2 className="text-2xl font-bold text-gray-800 mb-6">
+            <div className={styles.orderDetails}>
+              <h2 className={styles.orderDetailsTitle}>
                 Order Details
               </h2>
 
-              <div className="space-y-4 pb-6 border-b border-gray-200">
-                <div className="flex justify-between">
-                  <span className="text-gray-600">Order Number</span>
-                  <span className="font-semibold text-gray-800">
+              <div className={styles.detailLines}>
+                <div className={styles.detailLine}>
+                  <span className={styles.detailLabel}>Order Number</span>
+                  <span className={styles.detailValue}>
                     {order.orderNumber}
                   </span>
                 </div>
 
-                <div className="flex justify-between">
-                  <span className="text-gray-600">Payment Method</span>
-                  <span className="font-semibold text-gray-800 capitalize">
+                <div className={styles.detailLine}>
+                  <span className={styles.detailLabel}>Payment Method</span>
+                  <span className={styles.detailValue}>
                     {order.paymentMethod === 'cod'
                       ? 'Cash on Delivery'
                       : order.paymentMethod}
                   </span>
                 </div>
 
-                <div className="flex justify-between">
-                  <span className="text-gray-600">Subtotal</span>
-                  <span className="font-semibold text-gray-800">
+                <div className={styles.detailLine}>
+                  <span className={styles.detailLabel}>Subtotal</span>
+                  <span className={styles.detailValue}>
                     Rs {order.totalAmount.toFixed(0)}
                   </span>
                 </div>
 
-                <div className="flex justify-between">
-                  <span className="text-gray-600">Shipping</span>
-                  <span className="font-semibold text-gray-800">
+                <div className={styles.detailLine}>
+                  <span className={styles.detailLabel}>Shipping</span>
+                  <span className={styles.detailValue}>
                     Rs {order.shippingCost.toFixed(0)}
                   </span>
                 </div>
               </div>
 
-              <div className="flex justify-between pt-6">
-                <span className="text-lg font-bold text-gray-800">Total</span>
-                <span className="text-3xl font-bold text-rose-500">
+              <div className={styles.totalLine}>
+                <span className={styles.totalLabel}>Total</span>
+                <span className={styles.totalAmount}>
                   Rs {order.finalAmount.toFixed(0)}
                 </span>
               </div>
@@ -117,33 +118,33 @@ export default function OrderConfirmationPage() {
           )}
 
           {/* Next Steps */}
-          <div className="bg-blue-50 border border-blue-200 rounded-lg p-6 mb-8">
-            <h3 className="text-lg font-bold text-blue-900 mb-4">What's Next?</h3>
-            <ul className="space-y-2 text-blue-800">
-              <li>✓ Order confirmation has been sent to your email</li>
-              <li>✓ Your order will be prepared for shipment</li>
-              <li>✓ You'll receive a tracking number via SMS and email</li>
-              <li>✓ Estimated delivery: 3-5 business days</li>
+          <div className={styles.nextSteps}>
+            <h3 className={styles.nextStepsTitle}>What's Next?</h3>
+            <ul className={styles.nextStepsList}>
+              <li className={styles.nextStepsItem}>✓ Order confirmation has been sent to your email</li>
+              <li className={styles.nextStepsItem}>✓ Your order will be prepared for shipment</li>
+              <li className={styles.nextStepsItem}>✓ You'll receive a tracking number via SMS and email</li>
+              <li className={styles.nextStepsItem}>✓ Estimated delivery: 3-5 business days</li>
             </ul>
           </div>
 
           {/* Feedback Form */}
-          <div className="mb-8">
-            <h3 className="text-lg font-bold text-gray-800 mb-4">Share Your Feedback</h3>
+          <div className={styles.feedbackSection}>
+            <h3 className={styles.feedbackTitle}>Share Your Feedback</h3>
             <OrderFeedbackForm orderId={orderId} />
           </div>
 
           {/* Action Buttons */}
-          <div className="flex gap-4">
+          <div className={styles.actionButtons}>
             <Link
               href="/shop"
-              className="flex-1 text-center bg-rose-500 text-white py-3 rounded-lg font-bold hover:bg-rose-600 transition"
+              className={styles.primaryButton}
             >
               Continue Shopping
             </Link>
             <Link
               href="/"
-              className="flex-1 text-center bg-white text-rose-500 border-2 border-rose-500 py-3 rounded-lg font-bold hover:bg-rose-50 transition"
+              className={styles.secondaryButton}
             >
               Back to Home
             </Link>
