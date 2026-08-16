@@ -6,6 +6,7 @@ import Link from 'next/link';
 import { useCart } from '@/lib/hooks/useCart';
 import ProductReviews from '@/components/ProductReviews';
 import ProductReviewForm from '@/components/ProductReviewForm';
+import styles from '../product-detail.module.css';
 
 interface Product {
   id: string;
@@ -65,17 +66,17 @@ export default function ProductDetailPage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
-        <p className="text-gray-600">Loading product...</p>
+      <div className={styles.loadingContainer}>
+        <p className={styles.loadingMessage}>Loading product...</p>
       </div>
     );
   }
 
   if (error || !product) {
     return (
-      <div className="min-h-screen bg-gray-50 flex flex-col items-center justify-center">
-        <p className="text-gray-600 mb-4">{error || 'Product not found'}</p>
-        <Link href="/shop" className="text-rose-500 hover:text-rose-600">
+      <div className={styles.errorContainer}>
+        <p className={styles.errorMessage}>{error || 'Product not found'}</p>
+        <Link href="/shop" className={styles.errorLink}>
           Back to Shop
         </Link>
       </div>
@@ -83,59 +84,59 @@ export default function ProductDetailPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      <div className="container mx-auto px-4 py-12">
+    <div>
+      <div className={styles.container}>
         {/* Breadcrumb */}
-        <div className="mb-8">
-          <Link href="/shop" className="text-rose-500 hover:text-rose-600">
+        <div className={styles.breadcrumb}>
+          <Link href="/shop" className={styles.breadcrumbLink}>
             ← Back to Shop
           </Link>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
+        <div className={styles.layout}>
           {/* Product Image */}
           <div>
-            <div className="aspect-square bg-gray-100 rounded-lg border border-gray-200 flex items-center justify-center">
-              <div className="text-center">
-                <div className="text-gray-500 mb-4">Product Image</div>
-                <div className="text-6xl opacity-50">📦</div>
+            <div className={styles.imageContainer}>
+              <div className={styles.imageContent}>
+                <div className={styles.imagePlaceholder}>Product Image</div>
+                <div className={styles.imageIcon}>📦</div>
               </div>
             </div>
           </div>
 
           {/* Product Details */}
-          <div>
-            <div className="mb-4">
-              <span className="inline-block bg-rose-100 text-rose-700 px-4 py-1 rounded-full text-sm font-semibold">
+          <div className={styles.detailsSection}>
+            <div>
+              <span className={styles.categoryBadge}>
                 {product.category}
               </span>
             </div>
 
-            <h1 className="text-4xl font-bold text-gray-800 mb-4">
+            <h1 className={styles.title}>
               {product.name}
             </h1>
 
-            <div className="text-4xl font-bold text-rose-500 mb-6">
+            <div className={styles.price}>
               Rs {product.price.toFixed(0)}
             </div>
 
-            <p className="text-gray-600 text-lg mb-8 leading-relaxed">
+            <p className={styles.description}>
               {product.description}
             </p>
 
-            <div className="bg-white border border-gray-200 rounded-lg p-6 mb-8">
-              <div className="grid grid-cols-2 gap-4 mb-6">
-                <div>
-                  <p className="text-gray-600 text-sm mb-1">SKU</p>
-                  <p className="font-semibold text-gray-800">{product.sku}</p>
+            <div className={styles.specPanel}>
+              <div className={styles.specGrid}>
+                <div className={styles.specItem}>
+                  <p className={styles.specLabel}>SKU</p>
+                  <p className={styles.specValue}>{product.sku}</p>
                 </div>
-                <div>
-                  <p className="text-gray-600 text-sm mb-1">Stock Available</p>
-                  <p className="font-semibold text-gray-800">
+                <div className={styles.specItem}>
+                  <p className={styles.specLabel}>Stock Available</p>
+                  <p className={styles.specValue}>
                     {product.stock > 0 ? (
-                      <span className="text-green-600">{product.stock} units</span>
+                      <span className={styles.stockAvailable}>{product.stock} units</span>
                     ) : (
-                      <span className="text-red-600">Out of Stock</span>
+                      <span className={styles.stockUnavailable}>Out of Stock</span>
                     )}
                   </p>
                 </div>
@@ -144,17 +145,17 @@ export default function ProductDetailPage() {
 
             {/* Add to Cart Section */}
             {product.stock > 0 && (
-              <div className="space-y-4">
-                <div className="flex items-center gap-4">
-                  <label className="text-gray-700 font-semibold">
+              <div className={styles.addToCartSection}>
+                <div className={styles.quantityGroup}>
+                  <label className={styles.quantityLabel}>
                     Quantity:
                   </label>
-                  <div className="flex items-center border border-gray-300 rounded-lg">
+                  <div className={styles.quantityControl}>
                     <button
                       onClick={() =>
                         setQuantity(Math.max(1, quantity - 1))
                       }
-                      className="px-4 py-2 text-gray-600 hover:bg-gray-100"
+                      className={styles.quantityButton}
                     >
                       −
                     </button>
@@ -171,13 +172,13 @@ export default function ProductDetailPage() {
                           )
                         )
                       }
-                      className="w-16 text-center border-l border-r border-gray-300 py-2 focus:outline-none"
+                      className={styles.quantityInput}
                     />
                     <button
                       onClick={() =>
                         setQuantity(Math.min(product.stock, quantity + 1))
                       }
-                      className="px-4 py-2 text-gray-600 hover:bg-gray-100"
+                      className={styles.quantityButton}
                     >
                       +
                     </button>
@@ -186,14 +187,14 @@ export default function ProductDetailPage() {
 
                 <button
                   onClick={handleAddToCart}
-                  className="w-full bg-rose-500 text-white py-4 rounded-lg font-bold text-lg hover:bg-rose-600 transition"
+                  className={styles.addToCartButton}
                 >
                   {addedToCart ? '✓ Added to Cart' : 'Add to Cart'}
                 </button>
 
                 <Link
                   href="/cart"
-                  className="w-full block text-center bg-white text-rose-500 border-2 border-rose-500 py-3 rounded-lg font-semibold hover:bg-rose-50 transition"
+                  className={styles.goToCartButton}
                 >
                   Go to Cart
                 </Link>
@@ -201,9 +202,9 @@ export default function ProductDetailPage() {
             )}
 
             {product.stock === 0 && (
-              <div className="bg-red-50 border border-red-200 rounded-lg p-4 text-center">
-                <p className="text-red-700 font-semibold">Out of Stock</p>
-                <p className="text-red-600 text-sm mt-1">
+              <div className={styles.outOfStockAlert}>
+                <p className={styles.outOfStockTitle}>Out of Stock</p>
+                <p className={styles.outOfStockMessage}>
                   Check back soon for availability
                 </p>
               </div>
@@ -212,13 +213,13 @@ export default function ProductDetailPage() {
         </div>
 
         {/* Reviews Section */}
-        <div className="mt-16 pt-12 border-t border-gray-200">
-          <h2 className="text-3xl font-bold text-gray-800 mb-8">Customer Reviews</h2>
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
-            <div className="lg:col-span-2">
+        <div className={styles.reviewsSection}>
+          <h2 className={styles.reviewsTitle}>Customer Reviews</h2>
+          <div className={styles.reviewsLayout}>
+            <div className={styles.reviewsList}>
               <ProductReviews productId={productId} />
             </div>
-            <div>
+            <div className={styles.reviewForm}>
               <ProductReviewForm productId={productId} />
             </div>
           </div>
