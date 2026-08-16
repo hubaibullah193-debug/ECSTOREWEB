@@ -145,6 +145,51 @@ export const storeSettings = pgTable('store_settings', {
 });
 
 // ============================================================================
+// Product Reviews & Ratings
+// ============================================================================
+
+export const productReviews = pgTable('product_reviews', {
+  id: uuid('id').defaultRandom().primaryKey(),
+  productId: uuid('productId')
+    .notNull()
+    .references(() => products.id, { onDelete: 'cascade' }),
+  userId: text('userId')
+    .notNull()
+    .references(() => users.id, { onDelete: 'cascade' }),
+  orderId: uuid('orderId').references(() => orders.id, { onDelete: 'set null' }), // Optional: track which order the review came from
+  rating: integer('rating').notNull(), // 1-5 stars
+  title: varchar('title', { length: 200 }),
+  comment: text('comment'),
+  isApproved: boolean('isApproved').default(false), // Admin moderation
+  helpfulCount: integer('helpfulCount').default(0), // Users marking as helpful
+  images: jsonb('images'), // JSON array of image URLs
+  createdAt: timestamp('createdAt').defaultNow(),
+  updatedAt: timestamp('updatedAt').defaultNow(),
+});
+
+// ============================================================================
+// Order Feedback
+// ============================================================================
+
+export const orderFeedback = pgTable('order_feedback', {
+  id: uuid('id').defaultRandom().primaryKey(),
+  orderId: uuid('orderId')
+    .notNull()
+    .references(() => orders.id, { onDelete: 'cascade' }),
+  userId: text('userId')
+    .notNull()
+    .references(() => users.id, { onDelete: 'cascade' }),
+  overallRating: integer('overallRating').notNull(), // 1-5 stars
+  deliveryRating: integer('deliveryRating'), // 1-5 stars
+  packagingRating: integer('packagingRating'), // 1-5 stars
+  comment: text('comment'),
+  issues: text('issues'), // Any issues faced
+  wouldRecommend: boolean('wouldRecommend'), // Would they recommend?
+  createdAt: timestamp('createdAt').defaultNow(),
+  updatedAt: timestamp('updatedAt').defaultNow(),
+});
+
+// ============================================================================
 // Relations
 // ============================================================================
 
@@ -192,5 +237,31 @@ export const orderTrackingRelations = relations(orderTracking, ({ one }) => ({
   order: one(orders, {
     fields: [orderTracking.orderId],
     references: [orders.id],
+  }),
+}));
+
+export const productReviewsRelations = relations(productReviews, ({ one }) => ({
+  product: one(products, {
+    fields: [productReviews.productId],
+    references: [products.id],
+  }),
+  user: one(users, {
+    fields: [productReviews.userId],
+    references: [users.id],
+  }),
+  order: one(orders, {
+    fields: [productReviews.orderId],
+    references: [orders.id],
+  }),
+}));
+
+export const orderFeedbackRelations = relations(orderFeedback, ({ one }) => ({
+  order: one(orders, {
+    fields: [orderFeedback.orderId],
+    references: [orders.id],
+  }),
+  user: one(users, {
+    fields: [orderFeedback.userId],
+    references: [users.id],
   }),
 }));

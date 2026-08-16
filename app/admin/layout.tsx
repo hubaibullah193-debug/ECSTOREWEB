@@ -14,6 +14,7 @@ export default function AdminLayout({
     { href: '/admin', label: 'Dashboard' },
     { href: '/admin/inventory', label: 'Inventory' },
     { href: '/admin/orders', label: 'Orders' },
+    { href: '/admin/reviews', label: 'Reviews' },
     { href: '/admin/settings', label: 'Settings' },
     { href: '/admin/notifications', label: 'Notifications' },
   ];
