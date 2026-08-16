@@ -33,6 +33,24 @@ export async function PATCH(
       );
     }
 
+    // Trigger notification if status changed to shipped or delivered
+    if (status && (status === 'shipped' || status === 'delivered')) {
+      try {
+        await fetch(`${process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000'}/api/notifications/send`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            orderId: id,
+            type: `order_${status}`,
+          }),
+        }).catch(() => {
+          console.warn(`Failed to send order ${status} notification`);
+        });
+      } catch (notificationError) {
+        console.warn('Notification trigger error:', notificationError);
+      }
+    }
+
     return NextResponse.json({ order: result[0] });
   } catch (error) {
     console.error('Failed to update order:', error);

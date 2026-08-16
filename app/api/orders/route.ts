@@ -105,6 +105,23 @@ export async function POST(request: Request) {
         .where(eq(products.id, item.productId));
     }
 
+    // Trigger order confirmation notification (fire and forget)
+    try {
+      await fetch(`${process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000'}/api/notifications/send`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          orderId,
+          type: 'order_confirmation',
+        }),
+      }).catch(() => {
+        // Silently fail if notification service is unavailable
+        console.warn('Failed to send order confirmation notification');
+      });
+    } catch (notificationError) {
+      console.warn('Notification trigger error:', notificationError);
+    }
+
     return NextResponse.json(
       {
         data: {
