@@ -2,6 +2,8 @@ import { betterAuth } from "better-auth";
 import { drizzleAdapter } from "better-auth/adapters/drizzle";
 import { getDb } from "./db";
 
+let authInstance: any = null;
+
 export function createAuth() {
   const BETTER_AUTH_SECRET = process.env.BETTER_AUTH_SECRET;
   const BETTER_AUTH_URL = process.env.BETTER_AUTH_URL;
@@ -41,4 +43,10 @@ export function createAuth() {
   });
 }
 
-export const auth = createAuth();
+// Lazy initialization: only create auth instance when actually needed
+export function getAuth() {
+  if (!authInstance) {
+    authInstance = createAuth();
+  }
+  return authInstance;
+}

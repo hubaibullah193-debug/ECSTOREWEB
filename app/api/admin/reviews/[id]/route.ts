@@ -1,13 +1,14 @@
 import { getDb } from '@/lib/db';
 import { productReviews } from '@/db/schema';
 import { eq } from 'drizzle-orm';
-import { auth } from '@/lib/auth';
+import { getAuth } from '@/lib/auth';
 import { headers } from 'next/headers';
 
 export async function PATCH(req: Request, { params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
   const db = getDb();
   const hdrs = await headers();
+  const auth = getAuth();
   const session = await auth.api.getSession({ headers: hdrs });
 
   if (!session?.user?.id) {
@@ -43,6 +44,7 @@ export async function DELETE(req: Request, { params }: { params: Promise<{ id: s
   const { id } = await params;
   const db = getDb();
   const hdrs = await headers();
+  const auth = getAuth();
   const session = await auth.api.getSession({ headers: hdrs });
 
   if (!session?.user?.id) {

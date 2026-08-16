@@ -1,7 +1,7 @@
 import { getDb } from '@/lib/db';
 import { orderFeedback } from '@/db/schema';
-import { eq, and } from 'drizzle-orm';
-import { auth } from '@/lib/auth';
+import { eq } from 'drizzle-orm';
+import { getAuth } from '@/lib/auth';
 import { headers } from 'next/headers';
 
 export async function GET(req: Request) {
@@ -31,6 +31,7 @@ export async function GET(req: Request) {
 export async function POST(req: Request) {
   const db = getDb();
   const hdrs = await headers();
+  const auth = getAuth();
   const session = await auth.api.getSession({ headers: hdrs });
 
   if (!session?.user?.id) {
