@@ -86,10 +86,23 @@ export default function CheckoutPage() {
       setOrderCreated(true);
       clearCart();
 
-      // Redirect to order confirmation
-      setTimeout(() => {
-        router.push(`/order-confirmation/${order.orderId}`);
-      }, 1500);
+      // Handle different payment methods
+      if (formData.paymentMethod === 'cod') {
+        // Direct to order confirmation for COD
+        setTimeout(() => {
+          router.push(`/order-confirmation/${order.orderId}`);
+        }, 1500);
+      } else if (formData.paymentMethod === 'jazzcash') {
+        // Redirect to JazzCash payment initiation
+        setTimeout(() => {
+          router.push(`/api/payments/jazzcash/initiate?orderId=${order.orderId}`);
+        }, 500);
+      } else if (formData.paymentMethod === 'easypaisa') {
+        // Redirect to Easypaisa payment initiation
+        setTimeout(() => {
+          router.push(`/api/payments/easypaisa/initiate?orderId=${order.orderId}`);
+        }, 500);
+      }
     } catch (err) {
       setError(err instanceof Error ? err.message : 'An error occurred');
     } finally {
@@ -285,31 +298,43 @@ export default function CheckoutPage() {
                   </div>
                 </label>
 
-                <label className="flex items-center p-4 border border-gray-200 rounded-lg cursor-pointer hover:bg-gray-50 opacity-50">
+                <label className="flex items-center p-4 border border-gray-200 rounded-lg cursor-pointer hover:bg-gray-50">
                   <input
                     type="radio"
                     name="paymentMethod"
                     value="jazzcash"
-                    disabled
+                    checked={formData.paymentMethod === 'jazzcash'}
+                    onChange={(e) =>
+                      setFormData({
+                        ...formData,
+                        paymentMethod: e.target.value as 'cod' | 'jazzcash' | 'easypaisa',
+                      })
+                    }
                     className="w-4 h-4 text-rose-500"
                   />
                   <div className="ml-4">
                     <p className="font-semibold text-gray-800">JazzCash</p>
-                    <p className="text-sm text-gray-600">Coming soon</p>
+                    <p className="text-sm text-gray-600">Pay securely with JazzCash</p>
                   </div>
                 </label>
 
-                <label className="flex items-center p-4 border border-gray-200 rounded-lg cursor-pointer hover:bg-gray-50 opacity-50">
+                <label className="flex items-center p-4 border border-gray-200 rounded-lg cursor-pointer hover:bg-gray-50">
                   <input
                     type="radio"
                     name="paymentMethod"
                     value="easypaisa"
-                    disabled
+                    checked={formData.paymentMethod === 'easypaisa'}
+                    onChange={(e) =>
+                      setFormData({
+                        ...formData,
+                        paymentMethod: e.target.value as 'cod' | 'jazzcash' | 'easypaisa',
+                      })
+                    }
                     className="w-4 h-4 text-rose-500"
                   />
                   <div className="ml-4">
                     <p className="font-semibold text-gray-800">Easypaisa</p>
-                    <p className="text-sm text-gray-600">Coming soon</p>
+                    <p className="text-sm text-gray-600">Pay securely with Easypaisa</p>
                   </div>
                 </label>
               </div>
