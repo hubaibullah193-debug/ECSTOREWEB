@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { signUp } from "@/lib/auth-client";
 import Link from "next/link";
+import styles from "../auth.module.css";
 
 export default function SignUpPage() {
   const [name, setName] = useState("");
@@ -43,23 +44,23 @@ export default function SignUpPage() {
   }
 
   return (
-    <div className="space-y-[var(--space-6)]">
-      <div className="text-center space-y-[var(--space-2)]">
-        <h1 className="text-2xl font-serif font-bold">Create Account</h1>
-        <p className="text-sm text-gray-600">
+    <div className={styles.authContainer}>
+      <div className={styles.header}>
+        <h1 className={styles.title}>Create Account</h1>
+        <p className={styles.subtitle}>
           Join Khan Glowcare Center
         </p>
       </div>
 
-      <form onSubmit={handleSubmit} className="space-y-[var(--space-4)]">
+      <form onSubmit={handleSubmit} className={styles.form}>
         {error && (
-          <div className="p-[var(--space-3)] bg-red-50 border border-red-200 rounded text-red-700 text-sm">
+          <div className={styles.errorAlert}>
             {error}
           </div>
         )}
 
-        <div>
-          <label htmlFor="name" className="block text-sm font-medium mb-[var(--space-2)]">
+        <div className={styles.formGroup}>
+          <label htmlFor="name" className={styles.label}>
             Full Name
           </label>
           <input
@@ -68,13 +69,13 @@ export default function SignUpPage() {
             value={name}
             onChange={(e) => setName(e.target.value)}
             required
-            className="w-full px-[var(--space-3)] py-[var(--space-2)] border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-[var(--color-accent)]"
+            className={styles.input}
             disabled={loading}
           />
         </div>
 
-        <div>
-          <label htmlFor="email" className="block text-sm font-medium mb-[var(--space-2)]">
+        <div className={styles.formGroup}>
+          <label htmlFor="email" className={styles.label}>
             Email
           </label>
           <input
@@ -83,13 +84,13 @@ export default function SignUpPage() {
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             required
-            className="w-full px-[var(--space-3)] py-[var(--space-2)] border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-[var(--color-accent)]"
+            className={styles.input}
             disabled={loading}
           />
         </div>
 
-        <div>
-          <label htmlFor="password" className="block text-sm font-medium mb-[var(--space-2)]">
+        <div className={styles.formGroup}>
+          <label htmlFor="password" className={styles.label}>
             Password
           </label>
           <input
@@ -98,7 +99,7 @@ export default function SignUpPage() {
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             required
-            className="w-full px-[var(--space-3)] py-[var(--space-2)] border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-[var(--color-accent)]"
+            className={styles.input}
             disabled={loading}
           />
         </div>
@@ -106,16 +107,16 @@ export default function SignUpPage() {
         <button
           type="submit"
           disabled={loading}
-          className="w-full py-[var(--space-3)] bg-[var(--color-accent)] text-white rounded font-medium hover:opacity-90 disabled:opacity-50 transition"
+          className={styles.submitButton}
         >
           {loading ? "Creating account..." : "Sign Up"}
         </button>
       </form>
 
-      <div className="text-center text-sm">
+      <div className={styles.footer}>
         <p>
           Already have an account?{" "}
-          <Link href="/auth/login" className="text-[var(--color-accent)] font-medium hover:underline">
+          <Link href="/auth/login" className={styles.link}>
             Sign in
           </Link>
         </p>
