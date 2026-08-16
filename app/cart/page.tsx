@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { useCart } from '@/lib/hooks/useCart';
+import styles from './cart.module.css';
 
 export default function CartPage() {
   const { cart, updateQuantity, removeFromCart, total, isLoaded } = useCart();
@@ -14,29 +15,29 @@ export default function CartPage() {
 
   if (!mounted || !isLoaded) {
     return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
-        <p className="text-gray-600">Loading cart...</p>
+      <div className={styles.loadingContainer}>
+        <p className={styles.loadingMessage}>Loading cart...</p>
       </div>
     );
   }
 
   if (cart.length === 0) {
     return (
-      <div className="min-h-screen bg-gray-50">
-        <div className="container mx-auto px-4 py-12">
-          <h1 className="text-4xl font-bold text-gray-800 mb-8">Shopping Cart</h1>
+      <div>
+        <div className={styles.container}>
+          <h1 className={styles.title}>Shopping Cart</h1>
 
-          <div className="bg-white rounded-lg border border-gray-200 p-12 text-center">
-            <div className="text-6xl mb-4">🛒</div>
-            <h2 className="text-2xl font-bold text-gray-800 mb-4">
+          <div className={styles.emptyCart}>
+            <div className={styles.emptyIcon}>🛒</div>
+            <h2 className={styles.emptyTitle}>
               Your cart is empty
             </h2>
-            <p className="text-gray-600 mb-8">
+            <p className={styles.emptyMessage}>
               Start shopping to add items to your cart
             </p>
             <Link
               href="/shop"
-              className="inline-block bg-rose-500 text-white px-8 py-3 rounded-lg font-semibold hover:bg-rose-600 transition"
+              className={styles.continuShoppingButton}
             >
               Continue Shopping
             </Link>
@@ -47,41 +48,41 @@ export default function CartPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      <div className="container mx-auto px-4 py-12">
-        <h1 className="text-4xl font-bold text-gray-800 mb-8">Shopping Cart</h1>
+    <div>
+      <div className={styles.container}>
+        <h1 className={styles.title}>Shopping Cart</h1>
 
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        <div className={styles.layout}>
           {/* Cart Items */}
-          <div className="lg:col-span-2 space-y-4">
+          <div className={styles.cartItems}>
             {cart.map((item) => (
               <div
                 key={item.id}
-                className="bg-white border border-gray-200 rounded-lg p-6"
+                className={styles.cartItem}
               >
-                <div className="flex justify-between items-start mb-4">
-                  <div className="flex-1">
-                    <h3 className="text-xl font-semibold text-gray-800 mb-2">
+                <div className={styles.itemHeader}>
+                  <div className={styles.itemInfo}>
+                    <h3 className={styles.itemName}>
                       {item.name}
                     </h3>
-                    <p className="text-2xl font-bold text-rose-500">
+                    <p className={styles.itemPrice}>
                       Rs {item.price.toFixed(0)}
                     </p>
                   </div>
                   <button
                     onClick={() => removeFromCart(item.id)}
-                    className="text-red-500 hover:text-red-700 text-sm font-semibold"
+                    className={styles.removeButton}
                   >
                     Remove
                   </button>
                 </div>
 
-                <div className="flex items-center gap-4">
-                  <span className="text-gray-600">Quantity:</span>
-                  <div className="flex items-center border border-gray-300 rounded-lg">
+                <div className={styles.itemFooter}>
+                  <span className={styles.quantityLabel}>Quantity:</span>
+                  <div className={styles.quantityControl}>
                     <button
                       onClick={() => updateQuantity(item.id, item.quantity - 1)}
-                      className="px-3 py-1 text-gray-600 hover:bg-gray-100"
+                      className={styles.quantityButton}
                     >
                       −
                     </button>
@@ -92,16 +93,16 @@ export default function CartPage() {
                       onChange={(e) =>
                         updateQuantity(item.id, parseInt(e.target.value) || 1)
                       }
-                      className="w-12 text-center border-l border-r border-gray-300 py-1 focus:outline-none"
+                      className={styles.quantityInput}
                     />
                     <button
                       onClick={() => updateQuantity(item.id, item.quantity + 1)}
-                      className="px-3 py-1 text-gray-600 hover:bg-gray-100"
+                      className={styles.quantityButton}
                     >
                       +
                     </button>
                   </div>
-                  <span className="text-gray-600 ml-auto">
+                  <span className={styles.subtotal}>
                     Subtotal: Rs{' '}
                     {(item.price * item.quantity).toFixed(0)}
                   </span>
@@ -112,39 +113,39 @@ export default function CartPage() {
 
           {/* Order Summary */}
           <div>
-            <div className="bg-white border border-gray-200 rounded-lg p-6 sticky top-4">
-              <h2 className="text-2xl font-bold text-gray-800 mb-6">
+            <div className={styles.orderSummary}>
+              <h2 className={styles.summaryTitle}>
                 Order Summary
               </h2>
 
-              <div className="space-y-4 mb-6 pb-6 border-b border-gray-200">
-                <div className="flex justify-between text-gray-600">
+              <div className={styles.summaryLines}>
+                <div className={styles.summaryLine}>
                   <span>Subtotal</span>
                   <span>Rs {total.toFixed(0)}</span>
                 </div>
-                <div className="flex justify-between text-gray-600">
+                <div className={styles.summaryLine}>
                   <span>Shipping</span>
                   <span>Calculated at checkout</span>
                 </div>
               </div>
 
-              <div className="flex justify-between items-center mb-6">
-                <span className="text-lg font-bold text-gray-800">Total</span>
-                <span className="text-3xl font-bold text-rose-500">
+              <div className={styles.totalLine}>
+                <span className={styles.totalLabel}>Total</span>
+                <span className={styles.totalAmount}>
                   Rs {total.toFixed(0)}
                 </span>
               </div>
 
               <Link
                 href="/checkout"
-                className="w-full block text-center bg-rose-500 text-white py-3 rounded-lg font-bold hover:bg-rose-600 transition mb-3"
+                className={styles.checkoutButton}
               >
                 Proceed to Checkout
               </Link>
 
               <Link
                 href="/shop"
-                className="w-full block text-center bg-white text-rose-500 border-2 border-rose-500 py-2 rounded-lg font-semibold hover:bg-rose-50 transition"
+                className={styles.secondaryButton}
               >
                 Continue Shopping
               </Link>
