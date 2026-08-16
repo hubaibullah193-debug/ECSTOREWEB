@@ -4,6 +4,8 @@ import { useState, useEffect } from 'react';
 import { useParams } from 'next/navigation';
 import Link from 'next/link';
 import { useCart } from '@/lib/hooks/useCart';
+import ProductReviews from '@/components/ProductReviews';
+import ProductReviewForm from '@/components/ProductReviewForm';
 
 interface Product {
   id: string;
@@ -206,6 +208,19 @@ export default function ProductDetailPage() {
                 </p>
               </div>
             )}
+          </div>
+        </div>
+
+        {/* Reviews Section */}
+        <div className="mt-16 pt-12 border-t border-gray-200">
+          <h2 className="text-3xl font-bold text-gray-800 mb-8">Customer Reviews</h2>
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
+            <div className="lg:col-span-2">
+              <ProductReviews productId={productId} />
+            </div>
+            <div>
+              <ProductReviewForm productId={productId} />
+            </div>
           </div>
         </div>
       </div>

@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import { useParams } from 'next/navigation';
 import Link from 'next/link';
+import OrderFeedbackForm from '@/components/OrderFeedbackForm';
 
 interface OrderData {
   orderId: string;
@@ -124,6 +125,12 @@ export default function OrderConfirmationPage() {
               <li>✓ You'll receive a tracking number via SMS and email</li>
               <li>✓ Estimated delivery: 3-5 business days</li>
             </ul>
+          </div>
+
+          {/* Feedback Form */}
+          <div className="mb-8">
+            <h3 className="text-lg font-bold text-gray-800 mb-4">Share Your Feedback</h3>
+            <OrderFeedbackForm orderId={orderId} />
           </div>
 
           {/* Action Buttons */}
