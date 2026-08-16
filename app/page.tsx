@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
-import Image from 'next/image';
+import styles from './page.module.css';
 
 interface Product {
   id: string;
@@ -34,19 +34,19 @@ export default function HomePage() {
   }, []);
 
   return (
-    <div className="min-h-screen bg-white">
+    <div>
       {/* Hero Section */}
-      <section className="bg-gradient-to-r from-pink-500 to-rose-500 text-white py-20">
-        <div className="container mx-auto px-4 text-center">
-          <h1 className="text-4xl md:text-6xl font-bold mb-4">
+      <section className={styles.hero}>
+        <div className={styles.heroContent}>
+          <h1 className={styles.heroTitle}>
             Khan Glowcare Center
           </h1>
-          <p className="text-xl md:text-2xl mb-8 opacity-90">
+          <p className={styles.heroSubtitle}>
             Premium skincare products for radiant, healthy skin
           </p>
           <Link
             href="/shop"
-            className="inline-block bg-white text-rose-500 px-8 py-3 rounded-lg font-semibold hover:bg-gray-100 transition"
+            className={styles.ctaButton}
           >
             Shop Now
           </Link>
@@ -54,48 +54,44 @@ export default function HomePage() {
       </section>
 
       {/* Featured Products Section */}
-      <section className="py-20">
-        <div className="container mx-auto px-4">
-          <h2 className="text-4xl font-bold mb-12 text-center text-gray-800">
+      <section className={styles.featuredSection}>
+        <div className={styles.container}>
+          <h2 className={styles.sectionTitle}>
             Featured Products
           </h2>
 
           {loading ? (
-            <div className="text-center py-12">
-              <p className="text-gray-600">Loading products...</p>
+            <div className={styles.loadingMessage}>
+              <p>Loading products...</p>
             </div>
           ) : (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <div className={styles.productGrid}>
               {featuredProducts.map((product) => (
                 <Link
                   key={product.id}
                   href={`/products/${product.id}`}
-                  className="group"
+                  className={styles.productCard}
                 >
-                  <div className="bg-white border border-gray-200 rounded-lg overflow-hidden hover:shadow-lg transition">
-                    <div className="aspect-square bg-gray-100 relative overflow-hidden">
-                      <div className="w-full h-full bg-gradient-to-br from-gray-200 to-gray-300 flex items-center justify-center">
-                        <span className="text-gray-500">Product Image</span>
-                      </div>
-                    </div>
-                    <div className="p-4">
-                      <p className="text-sm text-rose-500 font-semibold mb-1">
-                        {product.category}
-                      </p>
-                      <h3 className="text-lg font-semibold mb-2 text-gray-800 group-hover:text-rose-500 transition">
-                        {product.name}
-                      </h3>
-                      <p className="text-sm text-gray-600 mb-4 line-clamp-2">
-                        {product.description}
-                      </p>
-                      <div className="flex justify-between items-center">
-                        <span className="text-2xl font-bold text-rose-500">
-                          Rs {product.price.toFixed(0)}
-                        </span>
-                        <button className="bg-rose-500 text-white px-4 py-2 rounded hover:bg-rose-600 transition">
-                          View
-                        </button>
-                      </div>
+                  <div className={styles.productImage}>
+                    <span className={styles.productImagePlaceholder}>Product Image</span>
+                  </div>
+                  <div className={styles.productContent}>
+                    <p className={styles.productCategory}>
+                      {product.category}
+                    </p>
+                    <h3 className={styles.productTitle}>
+                      {product.name}
+                    </h3>
+                    <p className={styles.productDescription}>
+                      {product.description}
+                    </p>
+                    <div className={styles.productFooter}>
+                      <span className={styles.productPrice}>
+                        Rs {product.price.toFixed(0)}
+                      </span>
+                      <button className={styles.viewButton}>
+                        View
+                      </button>
                     </div>
                   </div>
                 </Link>
@@ -106,18 +102,18 @@ export default function HomePage() {
       </section>
 
       {/* CTA Section */}
-      <section className="bg-gray-50 py-20">
-        <div className="container mx-auto px-4 text-center">
-          <h2 className="text-3xl font-bold mb-4 text-gray-800">
+      <section className={styles.ctaSection}>
+        <div className={styles.ctaSectionContent}>
+          <h2 className={styles.ctaSectionTitle}>
             Discover Your Glow
           </h2>
-          <p className="text-gray-600 mb-8 max-w-2xl mx-auto">
+          <p className={styles.ctaSectionDescription}>
             Explore our complete collection of premium skincare products designed
             to enhance your natural beauty.
           </p>
           <Link
             href="/shop"
-            className="inline-block bg-rose-500 text-white px-8 py-3 rounded-lg font-semibold hover:bg-rose-600 transition"
+            className={styles.primaryButton}
           >
             Browse All Products
           </Link>
