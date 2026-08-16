@@ -3,20 +3,5 @@
   "devCommand": "next dev",
   "installCommand": "npm install",
   "outputDirectory": ".next",
-  "framework": "nextjs",
-  "env": {
-    "DATABASE_URL": "@database_url",
-    "BETTER_AUTH_SECRET": "@better_auth_secret",
-    "BETTER_AUTH_URL": "@better_auth_url",
-    "RESEND_API_KEY": "@resend_api_key",
-    "TWILIO_ACCOUNT_SID": "@twilio_account_sid",
-    "TWILIO_AUTH_TOKEN": "@twilio_auth_token",
-    "TWILIO_PHONE_NUMBER": "@twilio_phone_number",
-    "JAZZCASH_MERCHANT_ID": "@jazzcash_merchant_id",
-    "JAZZCASH_PASSWORD": "@jazzcash_password",
-    "JAZZCASH_SALT_VALUE": "@jazzcash_salt_value",
-    "EASYPAISA_STORE_ID": "@easypaisa_store_id",
-    "EASYPAISA_AUTH_TOKEN": "@easypaisa_auth_token",
-    "NEXT_PUBLIC_BETTER_AUTH_URL": "@next_public_better_auth_url"
-  }
+  "framework": "nextjs"
 }
