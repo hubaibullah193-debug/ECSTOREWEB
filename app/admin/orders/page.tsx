@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
+import styles from '../admin.module.css';
 
 interface OrderItem {
   id: string;
@@ -89,22 +90,22 @@ export default function OrdersPage() {
   }
 
   return (
-    <div className="space-y-6">
-      <h1 className="text-3xl font-bold text-gray-800">Order Management</h1>
+    <div className={styles.dashboardContainer}>
+      <h1 className={styles.dashboardTitle}>Order Management</h1>
 
       {error && (
-        <div className="p-4 bg-red-100 text-red-700 rounded-lg">{error}</div>
+        <div style={{ padding: 'var(--space-4)', backgroundColor: 'var(--color-error)', color: 'var(--color-surface)', borderRadius: '0.5rem' }}>
+          {error}
+        </div>
       )}
 
       {/* Filter */}
-      <div className="bg-white rounded-lg shadow p-4">
-        <label className="block text-sm font-medium text-gray-700 mb-2">
-          Filter by Status
-        </label>
+      <div className={styles.actionsSection}>
+        <label className={styles.label}>Filter by Status</label>
         <select
           value={filterStatus}
           onChange={(e) => setFilterStatus(e.target.value)}
-          className="px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-slate-500"
+          className={styles.select}
         >
           <option value="">All Orders</option>
           {statuses.map((status) => (
@@ -115,149 +116,111 @@ export default function OrdersPage() {
         </select>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+      <div style={{ display: 'grid', gridTemplateColumns: '1fr 300px', gap: 'var(--space-6)' }}>
         {/* Orders List */}
-        <div className="lg:col-span-2 bg-white rounded-lg shadow overflow-hidden">
-          <div className="overflow-x-auto">
-            <table className="w-full">
-              <thead className="bg-gray-50 border-b">
+        <div className={styles.tableContainer}>
+          <table className={styles.table}>
+            <thead>
+              <tr>
+                <th>Order #</th>
+                <th>Customer</th>
+                <th>Status</th>
+                <th style={{ textAlign: 'right' }}>Amount</th>
+              </tr>
+            </thead>
+            <tbody>
+              {filteredOrders.length === 0 ? (
                 <tr>
-                  <th className="px-6 py-3 text-left text-sm font-semibold text-gray-700">
-                    Order #
-                  </th>
-                  <th className="px-6 py-3 text-left text-sm font-semibold text-gray-700">
-                    Customer
-                  </th>
-                  <th className="px-6 py-3 text-left text-sm font-semibold text-gray-700">
-                    Status
-                  </th>
-                  <th className="px-6 py-3 text-right text-sm font-semibold text-gray-700">
-                    Amount
-                  </th>
+                  <td colSpan={4} style={{ textAlign: 'center', padding: 'var(--space-8)' }}>
+                    No orders found
+                  </td>
                 </tr>
-              </thead>
-              <tbody className="divide-y">
-                {filteredOrders.length === 0 ? (
-                  <tr>
-                    <td colSpan={4} className="px-6 py-8 text-center text-gray-500">
-                      No orders found
+              ) : (
+                filteredOrders.map((order) => (
+                  <tr
+                    key={order.id}
+                    style={{ cursor: 'pointer' }}
+                    onClick={() => setSelectedOrder(order)}
+                  >
+                    <td style={{ fontWeight: 600 }}>{order.orderNumber}</td>
+                    <td>{order.shippingName}</td>
+                    <td>
+                      <span className={getStatusBadgeClass(order.status)}>
+                        {order.status.charAt(0).toUpperCase() + order.status.slice(1)}
+                      </span>
                     </td>
+                    <td style={{ textAlign: 'right', fontWeight: 600 }}>Rs. {order.totalAmount}</td>
                   </tr>
-                ) : (
-                  filteredOrders.map((order) => (
-                    <tr
-                      key={order.id}
-                      className="hover:bg-gray-50 cursor-pointer"
-                      onClick={() => setSelectedOrder(order)}
-                    >
-                      <td className="px-6 py-3 text-sm font-medium text-gray-900">
-                        {order.orderNumber}
-                      </td>
-                      <td className="px-6 py-3 text-sm text-gray-600">
-                        {order.shippingName}
-                      </td>
-                      <td className="px-6 py-3 text-sm">
-                        <span
-                          className={`inline-block px-2 py-1 rounded text-xs font-semibold ${
-                            order.status === 'delivered'
-                              ? 'bg-green-100 text-green-800'
-                              : order.status === 'cancelled'
-                              ? 'bg-red-100 text-red-800'
-                              : order.status === 'shipped'
-                              ? 'bg-blue-100 text-blue-800'
-                              : 'bg-yellow-100 text-yellow-800'
-                          }`}
-                        >
-                          {order.status.charAt(0).toUpperCase() + order.status.slice(1)}
-                        </span>
-                      </td>
-                      <td className="px-6 py-3 text-sm text-right text-gray-900 font-medium">
-                        Rs. {order.totalAmount}
-                      </td>
-                    </tr>
-                  ))
-                )}
-              </tbody>
-            </table>
-          </div>
-          <div className="px-6 py-4 bg-gray-50 text-sm text-gray-600">
+                ))
+              )}
+            </tbody>
+          </table>
+          <div style={{ padding: 'var(--space-4)', backgroundColor: 'var(--ink-quaternary)', fontSize: '0.875rem', color: 'var(--ink-secondary)' }}>
             Showing {filteredOrders.length} of {orders.length} orders
           </div>
         </div>
 
         {/* Order Details */}
         {selectedOrder && (
-          <div className="bg-white rounded-lg shadow p-6 h-fit">
-            <h3 className="text-lg font-semibold text-gray-800 mb-4">
-              Order Details
-            </h3>
+          <div className={styles.actionsSection} style={{ height: 'fit-content' }}>
+            <h3 className={styles.actionsTitle}>Order Details</h3>
 
-            <div className="space-y-4 mb-6">
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-4)', marginBottom: 'var(--space-6)' }}>
               <div>
-                <p className="text-xs text-gray-500 uppercase">Order Number</p>
-                <p className="text-sm font-semibold text-gray-800">
+                <p className={styles.statLabel}>Order Number</p>
+                <p style={{ fontSize: '0.875rem', fontWeight: 600, color: 'var(--ink-primary)' }}>
                   {selectedOrder.orderNumber}
                 </p>
               </div>
 
               <div>
-                <p className="text-xs text-gray-500 uppercase">Customer</p>
-                <p className="text-sm font-semibold text-gray-800">
+                <p className={styles.statLabel}>Customer</p>
+                <p style={{ fontSize: '0.875rem', fontWeight: 600, color: 'var(--ink-primary)' }}>
                   {selectedOrder.shippingName}
                 </p>
-                <p className="text-xs text-gray-600">{selectedOrder.shippingPhone}</p>
-                <p className="text-xs text-gray-600">{selectedOrder.shippingCity}</p>
+                <p style={{ fontSize: '0.75rem', color: 'var(--ink-secondary)' }}>{selectedOrder.shippingPhone}</p>
+                <p style={{ fontSize: '0.75rem', color: 'var(--ink-secondary)' }}>{selectedOrder.shippingCity}</p>
               </div>
 
               <div>
-                <p className="text-xs text-gray-500 uppercase">Amount</p>
-                <p className="text-lg font-bold text-slate-800">
+                <p className={styles.statLabel}>Amount</p>
+                <p style={{ fontSize: '1.125rem', fontWeight: 700, color: 'var(--ink-primary)' }}>
                   Rs. {selectedOrder.totalAmount}
                 </p>
               </div>
 
               <div>
-                <p className="text-xs text-gray-500 uppercase">Payment Method</p>
-                <p className="text-sm font-semibold text-gray-800">
+                <p className={styles.statLabel}>Payment Method</p>
+                <p style={{ fontSize: '0.875rem', fontWeight: 600, color: 'var(--ink-primary)' }}>
                   {selectedOrder.paymentMethod.toUpperCase()}
                 </p>
               </div>
 
               <div>
-                <p className="text-xs text-gray-500 uppercase">Payment Status</p>
-                <span
-                  className={`inline-block px-2 py-1 rounded text-xs font-semibold ${
-                    selectedOrder.paymentStatus === 'completed'
-                      ? 'bg-green-100 text-green-800'
-                      : selectedOrder.paymentStatus === 'failed'
-                      ? 'bg-red-100 text-red-800'
-                      : 'bg-yellow-100 text-yellow-800'
-                  }`}
-                >
+                <p className={styles.statLabel}>Payment Status</p>
+                <span className={getPaymentStatusBadgeClass(selectedOrder.paymentStatus)}>
                   {selectedOrder.paymentStatus.charAt(0).toUpperCase() +
                     selectedOrder.paymentStatus.slice(1)}
                 </span>
               </div>
 
               <div>
-                <p className="text-xs text-gray-500 uppercase">Date</p>
-                <p className="text-sm text-gray-600">
+                <p className={styles.statLabel}>Date</p>
+                <p style={{ fontSize: '0.875rem', color: 'var(--ink-secondary)' }}>
                   {new Date(selectedOrder.createdAt).toLocaleDateString()}
                 </p>
               </div>
             </div>
 
             {/* Status Update */}
-            <div className="border-t pt-4">
-              <label className="block text-xs text-gray-500 uppercase font-semibold mb-2">
-                Update Status
-              </label>
+            <div style={{ borderTop: '1px solid var(--ink-tertiary)', paddingTop: 'var(--space-4)' }}>
+              <label className={styles.label}>Update Status</label>
               <select
                 value={selectedOrder.status}
                 onChange={(e) =>
                   handleStatusChange(selectedOrder.id, e.target.value)
                 }
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-slate-500 text-sm"
+                className={styles.select}
               >
                 {statuses.map((status) => (
                   <option key={status} value={status}>
@@ -271,4 +234,28 @@ export default function OrdersPage() {
       </div>
     </div>
   );
+
+  function getStatusBadgeClass(status: string): string {
+    switch (status) {
+      case 'delivered':
+        return styles.badgeSuccess;
+      case 'cancelled':
+        return styles.badgeError;
+      case 'shipped':
+        return styles.badgeInfo;
+      default:
+        return styles.badgeWarning;
+    }
+  }
+
+  function getPaymentStatusBadgeClass(status: string): string {
+    switch (status) {
+      case 'completed':
+        return styles.badgeSuccess;
+      case 'failed':
+        return styles.badgeError;
+      default:
+        return styles.badgeWarning;
+    }
+  }
 }

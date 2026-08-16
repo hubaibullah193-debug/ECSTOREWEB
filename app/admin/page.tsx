@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import styles from './admin.module.css';
 
 interface DashboardStats {
   totalProducts: number;
@@ -32,64 +33,55 @@ export default function AdminDashboard() {
   }, []);
 
   if (loading) {
-    return <div className="text-center text-gray-500">Loading dashboard...</div>;
+    return <div className={styles.loadingMessage}>Loading dashboard...</div>;
   }
 
   if (!stats) {
-    return <div className="text-center text-red-500">Failed to load dashboard</div>;
+    return <div className={styles.errorMessage}>Failed to load dashboard</div>;
   }
 
   return (
-    <div className="space-y-6">
-      <h1 className="text-3xl font-bold text-gray-800">Dashboard</h1>
+    <div className={styles.dashboardContainer}>
+      <h1 className={styles.dashboardTitle}>Dashboard</h1>
 
       {/* Stats Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <div className={styles.statsGrid}>
         {/* Products Section */}
-        <div className="bg-white rounded-lg shadow p-6">
-          <h3 className="text-gray-600 text-sm font-semibold uppercase">Total Products</h3>
-          <p className="text-3xl font-bold text-slate-800 mt-2">{stats.totalProducts}</p>
-          <p className="text-xs text-gray-500 mt-1">{stats.activeProducts} active</p>
+        <div className={styles.statCard}>
+          <h3 className={styles.statLabel}>Total Products</h3>
+          <p className={styles.statValue}>{stats.totalProducts}</p>
+          <p className={styles.statSubtext}>{stats.activeProducts} active</p>
         </div>
 
-        <div className="bg-white rounded-lg shadow p-6">
-          <h3 className="text-gray-600 text-sm font-semibold uppercase">Low Stock</h3>
-          <p className="text-3xl font-bold text-orange-600 mt-2">{stats.lowStockProducts}</p>
-          <p className="text-xs text-gray-500 mt-1">Products with stock &lt; 5</p>
+        <div className={styles.statCard}>
+          <h3 className={styles.statLabel}>Low Stock</h3>
+          <p className={`${styles.statValue} ${styles.statValueWarning}`}>{stats.lowStockProducts}</p>
+          <p className={styles.statSubtext}>Products with stock &lt; 5</p>
         </div>
 
         {/* Orders Section */}
-        <div className="bg-white rounded-lg shadow p-6">
-          <h3 className="text-gray-600 text-sm font-semibold uppercase">Total Orders</h3>
-          <p className="text-3xl font-bold text-slate-800 mt-2">{stats.totalOrders}</p>
-          <p className="text-xs text-gray-500 mt-1">{stats.pendingOrders} pending</p>
+        <div className={styles.statCard}>
+          <h3 className={styles.statLabel}>Total Orders</h3>
+          <p className={styles.statValue}>{stats.totalOrders}</p>
+          <p className={styles.statSubtext}>{stats.pendingOrders} pending</p>
         </div>
       </div>
 
       {/* Quick Actions */}
-      <div className="bg-white rounded-lg shadow p-6">
-        <h2 className="text-lg font-semibold text-gray-800 mb-4">Quick Actions</h2>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-          <a
-            href="/admin/inventory/new"
-            className="block p-4 border border-slate-300 rounded-lg hover:bg-slate-50 transition-colors text-center"
-          >
-            <p className="font-semibold text-slate-800">Add Product</p>
-            <p className="text-sm text-gray-600 mt-1">Create a new product</p>
+      <div className={styles.actionsSection}>
+        <h2 className={styles.actionsTitle}>Quick Actions</h2>
+        <div className={styles.actionsGrid}>
+          <a href="/admin/inventory/new" className={styles.actionCard}>
+            <p className={styles.actionCardTitle}>Add Product</p>
+            <p className={styles.actionCardDescription}>Create a new product</p>
           </a>
-          <a
-            href="/admin/inventory"
-            className="block p-4 border border-slate-300 rounded-lg hover:bg-slate-50 transition-colors text-center"
-          >
-            <p className="font-semibold text-slate-800">Manage Inventory</p>
-            <p className="text-sm text-gray-600 mt-1">Edit products and stock</p>
+          <a href="/admin/inventory" className={styles.actionCard}>
+            <p className={styles.actionCardTitle}>Manage Inventory</p>
+            <p className={styles.actionCardDescription}>Edit products and stock</p>
           </a>
-          <a
-            href="/admin/orders"
-            className="block p-4 border border-slate-300 rounded-lg hover:bg-slate-50 transition-colors text-center"
-          >
-            <p className="font-semibold text-slate-800">View Orders</p>
-            <p className="text-sm text-gray-600 mt-1">Manage customer orders</p>
+          <a href="/admin/orders" className={styles.actionCard}>
+            <p className={styles.actionCardTitle}>View Orders</p>
+            <p className={styles.actionCardDescription}>Manage customer orders</p>
           </a>
         </div>
       </div>

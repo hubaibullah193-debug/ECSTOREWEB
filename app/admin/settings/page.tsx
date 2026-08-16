@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import styles from '../admin.module.css';
 
 interface StoreSetting {
   key: string;
@@ -134,38 +135,40 @@ export default function SettingsPage() {
   };
 
   if (loading) {
-    return <div className="text-center text-gray-500">Loading settings...</div>;
+    return <div className={styles.loadingMessage}>Loading settings...</div>;
   }
 
   return (
-    <div className="max-w-4xl space-y-6">
-      <h1 className="text-3xl font-bold text-gray-800">Store Settings</h1>
+    <div style={{ maxWidth: '56rem', display: 'flex', flexDirection: 'column', gap: 'var(--space-6)' }}>
+      <h1 className={styles.dashboardTitle}>Store Settings</h1>
 
       {error && (
-        <div className="p-4 bg-red-100 text-red-700 rounded-lg">{error}</div>
+        <div style={{ padding: 'var(--space-4)', backgroundColor: 'var(--color-error)', color: 'var(--color-surface)', borderRadius: '0.5rem' }}>
+          {error}
+        </div>
       )}
 
       {success && (
-        <div className="p-4 bg-green-100 text-green-700 rounded-lg">{success}</div>
+        <div style={{ padding: 'var(--space-4)', backgroundColor: 'var(--color-success)', color: 'var(--color-surface)', borderRadius: '0.5rem' }}>
+          {success}
+        </div>
       )}
 
-      <div className="bg-white rounded-lg shadow p-6 space-y-6">
+      <div className={styles.actionsSection} style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-6)' }}>
         {/* Business Information */}
         <div>
-          <h2 className="text-lg font-semibold text-gray-800 mb-4">Business Information</h2>
-          <div className="space-y-4">
+          <h2 className={styles.actionsTitle}>Business Information</h2>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-4)' }}>
             {settings
               .filter((s) => s.key.startsWith('store_'))
               .map((setting) => (
-                <div key={setting.key}>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
-                    {setting.description}
-                  </label>
+                <div key={setting.key} className={styles.formGroup}>
+                  <label className={styles.label}>{setting.description}</label>
                   <input
                     type="text"
                     value={setting.value}
                     onChange={(e) => handleChange(setting.key, e.target.value)}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-slate-500"
+                    className={styles.input}
                   />
                 </div>
               ))}
@@ -173,45 +176,41 @@ export default function SettingsPage() {
         </div>
 
         {/* Payment Gateway Configuration */}
-        <div className="border-t pt-6">
-          <h2 className="text-lg font-semibold text-gray-800 mb-4">Payment Gateways</h2>
+        <div style={{ borderTop: '1px solid var(--ink-tertiary)', paddingTop: 'var(--space-6)' }}>
+          <h2 className={styles.actionsTitle}>Payment Gateways</h2>
 
-          <div className="space-y-6">
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-6)' }}>
             {/* JazzCash */}
-            <div className="p-4 bg-gray-50 rounded-lg space-y-4">
-              <h3 className="font-medium text-gray-800">JazzCash</h3>
+            <div style={{ padding: 'var(--space-4)', backgroundColor: 'var(--ink-quaternary)', borderRadius: '0.5rem', display: 'flex', flexDirection: 'column', gap: 'var(--space-4)' }}>
+              <h3 style={{ fontWeight: 600, color: 'var(--ink-primary)' }}>JazzCash</h3>
               {settings
                 .filter((s) => s.key.startsWith('jazzcash_'))
                 .map((setting) => (
-                  <div key={setting.key}>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">
-                      {setting.description}
-                    </label>
+                  <div key={setting.key} className={styles.formGroup}>
+                    <label className={styles.label}>{setting.description}</label>
                     <input
                       type={setting.key.includes('password') || setting.key.includes('token') ? 'password' : 'text'}
                       value={setting.value}
                       onChange={(e) => handleChange(setting.key, e.target.value)}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-slate-500"
+                      className={styles.input}
                     />
                   </div>
                 ))}
             </div>
 
             {/* Easypaisa */}
-            <div className="p-4 bg-gray-50 rounded-lg space-y-4">
-              <h3 className="font-medium text-gray-800">Easypaisa</h3>
+            <div style={{ padding: 'var(--space-4)', backgroundColor: 'var(--ink-quaternary)', borderRadius: '0.5rem', display: 'flex', flexDirection: 'column', gap: 'var(--space-4)' }}>
+              <h3 style={{ fontWeight: 600, color: 'var(--ink-primary)' }}>Easypaisa</h3>
               {settings
                 .filter((s) => s.key.startsWith('easypaisa_'))
                 .map((setting) => (
-                  <div key={setting.key}>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">
-                      {setting.description}
-                    </label>
+                  <div key={setting.key} className={styles.formGroup}>
+                    <label className={styles.label}>{setting.description}</label>
                     <input
                       type={setting.key.includes('password') || setting.key.includes('token') ? 'password' : 'text'}
                       value={setting.value}
                       onChange={(e) => handleChange(setting.key, e.target.value)}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-slate-500"
+                      className={styles.input}
                     />
                   </div>
                 ))}
@@ -220,21 +219,19 @@ export default function SettingsPage() {
         </div>
 
         {/* Shipping Settings */}
-        <div className="border-t pt-6">
-          <h2 className="text-lg font-semibold text-gray-800 mb-4">Shipping</h2>
-          <div className="space-y-4">
+        <div style={{ borderTop: '1px solid var(--ink-tertiary)', paddingTop: 'var(--space-6)' }}>
+          <h2 className={styles.actionsTitle}>Shipping</h2>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-4)' }}>
             {settings
               .filter((s) => s.key.startsWith('shipping_'))
               .map((setting) => (
-                <div key={setting.key}>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
-                    {setting.description}
-                  </label>
+                <div key={setting.key} className={styles.formGroup}>
+                  <label className={styles.label}>{setting.description}</label>
                   <input
                     type="number"
                     value={setting.value}
                     onChange={(e) => handleChange(setting.key, e.target.value)}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-slate-500"
+                    className={styles.input}
                   />
                 </div>
               ))}
@@ -242,15 +239,16 @@ export default function SettingsPage() {
         </div>
 
         {/* Save Button */}
-        <div className="border-t pt-6 flex gap-4">
+        <div style={{ borderTop: '1px solid var(--ink-tertiary)', paddingTop: 'var(--space-6)', display: 'flex', gap: 'var(--space-4)', alignItems: 'center' }}>
           <button
             onClick={handleSave}
             disabled={saving}
-            className="px-6 py-2 bg-slate-800 text-white rounded-lg hover:bg-slate-700 disabled:bg-gray-400 transition-colors"
+            className={styles.buttonPrimary}
+            style={{ opacity: saving ? 0.6 : 1 }}
           >
             {saving ? 'Saving...' : 'Save Settings'}
           </button>
-          <p className="text-xs text-gray-500 py-2">
+          <p style={{ fontSize: '0.75rem', color: 'var(--ink-secondary)', margin: 0 }}>
             Settings are stored securely in the database
           </p>
         </div>

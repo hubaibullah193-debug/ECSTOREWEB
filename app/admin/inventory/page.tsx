@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
+import styles from '../admin.module.css';
 
 interface Product {
   id: string;
@@ -90,44 +91,39 @@ export default function InventoryPage() {
   }
 
   return (
-    <div className="space-y-6">
-      <div className="flex justify-between items-center">
-        <h1 className="text-3xl font-bold text-gray-800">Inventory Management</h1>
-        <Link
-          href="/admin/inventory/new"
-          className="px-4 py-2 bg-slate-800 text-white rounded-lg hover:bg-slate-700 transition-colors"
-        >
+    <div className={styles.dashboardContainer}>
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+        <h1 className={styles.dashboardTitle}>Inventory Management</h1>
+        <Link href="/admin/inventory/new" className={styles.buttonPrimary}>
           Add Product
         </Link>
       </div>
 
       {error && (
-        <div className="p-4 bg-red-100 text-red-700 rounded-lg">{error}</div>
+        <div style={{ padding: 'var(--space-4)', backgroundColor: 'var(--color-error)', color: 'var(--color-surface)', borderRadius: '0.5rem' }}>
+          {error}
+        </div>
       )}
 
       {/* Filters */}
-      <div className="bg-white rounded-lg shadow p-4 space-y-4">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
-              Search
-            </label>
+      <div className={styles.actionsSection}>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))', gap: 'var(--space-4)' }}>
+          <div className={styles.formGroup}>
+            <label className={styles.label}>Search</label>
             <input
               type="text"
               placeholder="Search by name or SKU..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-slate-500"
+              className={styles.input}
             />
           </div>
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
-              Category
-            </label>
+          <div className={styles.formGroup}>
+            <label className={styles.label}>Category</label>
             <select
               value={filterCategory}
               onChange={(e) => setFilterCategory(e.target.value)}
-              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-slate-500"
+              className={styles.select}
             >
               <option value="">All Categories</option>
               {categories.map((cat) => (
@@ -141,98 +137,69 @@ export default function InventoryPage() {
       </div>
 
       {/* Products Table */}
-      <div className="bg-white rounded-lg shadow overflow-hidden">
-        <div className="overflow-x-auto">
-          <table className="w-full">
-            <thead className="bg-gray-50 border-b">
+      <div className={styles.tableContainer}>
+        <table className={styles.table}>
+          <thead>
+            <tr>
+              <th>Product</th>
+              <th>SKU</th>
+              <th>Category</th>
+              <th style={{ textAlign: 'right' }}>Price</th>
+              <th style={{ textAlign: 'right' }}>Stock</th>
+              <th style={{ textAlign: 'center' }}>Status</th>
+              <th style={{ textAlign: 'center' }}>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            {filteredProducts.length === 0 ? (
               <tr>
-                <th className="px-6 py-3 text-left text-sm font-semibold text-gray-700">
-                  Product
-                </th>
-                <th className="px-6 py-3 text-left text-sm font-semibold text-gray-700">
-                  SKU
-                </th>
-                <th className="px-6 py-3 text-left text-sm font-semibold text-gray-700">
-                  Category
-                </th>
-                <th className="px-6 py-3 text-right text-sm font-semibold text-gray-700">
-                  Price
-                </th>
-                <th className="px-6 py-3 text-right text-sm font-semibold text-gray-700">
-                  Stock
-                </th>
-                <th className="px-6 py-3 text-center text-sm font-semibold text-gray-700">
-                  Status
-                </th>
-                <th className="px-6 py-3 text-center text-sm font-semibold text-gray-700">
-                  Actions
-                </th>
+                <td colSpan={7} style={{ textAlign: 'center', padding: 'var(--space-8)' }}>
+                  No products found
+                </td>
               </tr>
-            </thead>
-            <tbody className="divide-y">
-              {filteredProducts.length === 0 ? (
-                <tr>
-                  <td colSpan={7} className="px-6 py-8 text-center text-gray-500">
-                    No products found
+            ) : (
+              filteredProducts.map((product) => (
+                <tr key={product.id}>
+                  <td style={{ fontWeight: 600 }}>{product.name}</td>
+                  <td>{product.sku}</td>
+                  <td>{product.category}</td>
+                  <td style={{ textAlign: 'right', fontWeight: 600 }}>Rs. {product.price}</td>
+                  <td style={{ textAlign: 'right' }}>
+                    <span className={product.stock < 5 ? styles.badgeError : styles.badgeSuccess}>
+                      {product.stock}
+                    </span>
+                  </td>
+                  <td style={{ textAlign: 'center' }}>
+                    <button
+                      onClick={() => handleToggleActive(product.id, product.isActive)}
+                      className={product.isActive ? styles.badgeInfo : styles.badgeWarning}
+                      style={{ cursor: 'pointer', border: 'none', padding: 'var(--space-1) var(--space-2)', borderRadius: '0.25rem' }}
+                    >
+                      {product.isActive ? 'Active' : 'Inactive'}
+                    </button>
+                  </td>
+                  <td style={{ textAlign: 'center', display: 'flex', gap: 'var(--space-2)', justifyContent: 'center' }}>
+                    <Link
+                      href={`/admin/inventory/${product.id}`}
+                      style={{ color: 'var(--color-accent)', textDecoration: 'none', fontWeight: 600 }}
+                    >
+                      Edit
+                    </Link>
+                    <button
+                      onClick={() => handleDeleteProduct(product.id)}
+                      style={{ color: 'var(--color-error)', background: 'none', border: 'none', fontWeight: 600, cursor: 'pointer' }}
+                    >
+                      Delete
+                    </button>
                   </td>
                 </tr>
-              ) : (
-                filteredProducts.map((product) => (
-                  <tr key={product.id} className="hover:bg-gray-50">
-                    <td className="px-6 py-3 text-sm font-medium text-gray-900">
-                      {product.name}
-                    </td>
-                    <td className="px-6 py-3 text-sm text-gray-600">{product.sku}</td>
-                    <td className="px-6 py-3 text-sm text-gray-600">{product.category}</td>
-                    <td className="px-6 py-3 text-sm text-right text-gray-900 font-medium">
-                      Rs. {product.price}
-                    </td>
-                    <td className="px-6 py-3 text-sm text-right">
-                      <span
-                        className={`inline-block px-2 py-1 rounded text-xs font-semibold ${
-                          product.stock < 5
-                            ? 'bg-red-100 text-red-800'
-                            : 'bg-green-100 text-green-800'
-                        }`}
-                      >
-                        {product.stock}
-                      </span>
-                    </td>
-                    <td className="px-6 py-3 text-center">
-                      <button
-                        onClick={() => handleToggleActive(product.id, product.isActive)}
-                        className={`inline-block px-2 py-1 rounded text-xs font-semibold cursor-pointer ${
-                          product.isActive
-                            ? 'bg-blue-100 text-blue-800 hover:bg-blue-200'
-                            : 'bg-gray-100 text-gray-800 hover:bg-gray-200'
-                        }`}
-                      >
-                        {product.isActive ? 'Active' : 'Inactive'}
-                      </button>
-                    </td>
-                    <td className="px-6 py-3 text-center text-sm space-x-2">
-                      <Link
-                        href={`/admin/inventory/${product.id}`}
-                        className="text-blue-600 hover:text-blue-800 font-medium"
-                      >
-                        Edit
-                      </Link>
-                      <button
-                        onClick={() => handleDeleteProduct(product.id)}
-                        className="text-red-600 hover:text-red-800 font-medium"
-                      >
-                        Delete
-                      </button>
-                    </td>
-                  </tr>
-                ))
-              )}
-            </tbody>
-          </table>
-        </div>
+              ))
+            )}
+          </tbody>
+        </table>
       </div>
 
-      <div className="text-sm text-gray-600">
+      <div style={{ fontSize: '0.875rem', color: 'var(--ink-secondary)' }}>
         Showing {filteredProducts.length} of {products.length} products
       </div>
     </div>

@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
+import styles from '../admin.module.css';
 
 interface NotificationSettings {
   notify_sms: boolean;
@@ -69,73 +70,69 @@ export default function NotificationsPage() {
   }
 
   if (loading) {
-    return (
-      <div className="flex items-center justify-center min-h-screen">
-        <div className="text-lg text-gray-600">Loading settings...</div>
-      </div>
-    );
+    return <div className={styles.loadingMessage}>Loading settings...</div>;
   }
 
   return (
-    <div className="p-6">
-      <div className="flex items-center gap-3 mb-6">
-        <Link href="/admin" className="text-blue-600 hover:text-blue-800 text-2xl">
+    <div style={{ padding: 'var(--space-6)' }}>
+      <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--space-3)', marginBottom: 'var(--space-6)' }}>
+        <Link href="/admin" style={{ color: 'var(--color-accent)', fontSize: '1.5rem', textDecoration: 'none' }}>
           ←
         </Link>
-        <h1 className="text-3xl font-bold text-gray-900">Notification Settings</h1>
+        <h1 className={styles.dashboardTitle}>Notification Settings</h1>
       </div>
 
-      <div className="max-w-2xl bg-white rounded-lg shadow p-6 space-y-6">
+      <div className={styles.actionsSection} style={{ maxWidth: '42rem', display: 'flex', flexDirection: 'column', gap: 'var(--space-6)' }}>
         {/* Notification Channels */}
         <div>
-          <h2 className="text-xl font-semibold text-gray-900 mb-4">Notification Channels</h2>
-          <div className="space-y-3">
-            <label className="flex items-center gap-3 p-3 border border-gray-200 rounded-lg hover:bg-gray-50 cursor-pointer">
+          <h2 className={styles.actionsTitle}>Notification Channels</h2>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-3)' }}>
+            <label style={{ display: 'flex', alignItems: 'center', gap: 'var(--space-3)', padding: 'var(--space-3)', border: '1px solid var(--ink-tertiary)', borderRadius: '0.5rem', cursor: 'pointer', transition: 'background-color var(--dur-mid) var(--ease-out)' }}>
               <input
                 type="checkbox"
                 checked={settings.notify_email}
                 onChange={(e) =>
                   setSettings({ ...settings, notify_email: e.target.checked })
                 }
-                className="w-4 h-4"
+                style={{ width: '1rem', height: '1rem' }}
               />
               <div>
-                <div className="font-medium text-gray-900">Email Notifications</div>
-                <div className="text-sm text-gray-600">
+                <div style={{ fontWeight: 600, color: 'var(--ink-primary)' }}>Email Notifications</div>
+                <div style={{ fontSize: '0.875rem', color: 'var(--ink-secondary)' }}>
                   Send order confirmations and updates via email
                 </div>
               </div>
             </label>
 
-            <label className="flex items-center gap-3 p-3 border border-gray-200 rounded-lg hover:bg-gray-50 cursor-pointer">
+            <label style={{ display: 'flex', alignItems: 'center', gap: 'var(--space-3)', padding: 'var(--space-3)', border: '1px solid var(--ink-tertiary)', borderRadius: '0.5rem', cursor: 'pointer', transition: 'background-color var(--dur-mid) var(--ease-out)' }}>
               <input
                 type="checkbox"
                 checked={settings.notify_sms}
                 onChange={(e) =>
                   setSettings({ ...settings, notify_sms: e.target.checked })
                 }
-                className="w-4 h-4"
+                style={{ width: '1rem', height: '1rem' }}
               />
               <div>
-                <div className="font-medium text-gray-900">SMS Notifications</div>
-                <div className="text-sm text-gray-600">
+                <div style={{ fontWeight: 600, color: 'var(--ink-primary)' }}>SMS Notifications</div>
+                <div style={{ fontSize: '0.875rem', color: 'var(--ink-secondary)' }}>
                   Send order updates via SMS (requires Twilio)
                 </div>
               </div>
             </label>
 
-            <label className="flex items-center gap-3 p-3 border border-gray-200 rounded-lg hover:bg-gray-50 cursor-pointer">
+            <label style={{ display: 'flex', alignItems: 'center', gap: 'var(--space-3)', padding: 'var(--space-3)', border: '1px solid var(--ink-tertiary)', borderRadius: '0.5rem', cursor: 'pointer', transition: 'background-color var(--dur-mid) var(--ease-out)' }}>
               <input
                 type="checkbox"
                 checked={settings.notify_whatsapp}
                 onChange={(e) =>
                   setSettings({ ...settings, notify_whatsapp: e.target.checked })
                 }
-                className="w-4 h-4"
+                style={{ width: '1rem', height: '1rem' }}
               />
               <div>
-                <div className="font-medium text-gray-900">WhatsApp Notifications</div>
-                <div className="text-sm text-gray-600">
+                <div style={{ fontWeight: 600, color: 'var(--ink-primary)' }}>WhatsApp Notifications</div>
+                <div style={{ fontSize: '0.875rem', color: 'var(--ink-secondary)' }}>
                   Send order updates via WhatsApp (requires Twilio)
                 </div>
               </div>
@@ -145,9 +142,9 @@ export default function NotificationsPage() {
 
         {/* Notification Events */}
         <div>
-          <h2 className="text-xl font-semibold text-gray-900 mb-4">Notification Events</h2>
-          <div className="space-y-3">
-            <label className="flex items-center gap-3 p-3 border border-gray-200 rounded-lg hover:bg-gray-50 cursor-pointer">
+          <h2 className={styles.actionsTitle}>Notification Events</h2>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-3)' }}>
+            <label style={{ display: 'flex', alignItems: 'center', gap: 'var(--space-3)', padding: 'var(--space-3)', border: '1px solid var(--ink-tertiary)', borderRadius: '0.5rem', cursor: 'pointer', transition: 'background-color var(--dur-mid) var(--ease-out)' }}>
               <input
                 type="checkbox"
                 checked={settings.notify_on_confirmation}
@@ -157,34 +154,34 @@ export default function NotificationsPage() {
                     notify_on_confirmation: e.target.checked,
                   })
                 }
-                className="w-4 h-4"
+                style={{ width: '1rem', height: '1rem' }}
               />
               <div>
-                <div className="font-medium text-gray-900">Order Confirmation</div>
-                <div className="text-sm text-gray-600">
+                <div style={{ fontWeight: 600, color: 'var(--ink-primary)' }}>Order Confirmation</div>
+                <div style={{ fontSize: '0.875rem', color: 'var(--ink-secondary)' }}>
                   Notify customers when their order is confirmed
                 </div>
               </div>
             </label>
 
-            <label className="flex items-center gap-3 p-3 border border-gray-200 rounded-lg hover:bg-gray-50 cursor-pointer">
+            <label style={{ display: 'flex', alignItems: 'center', gap: 'var(--space-3)', padding: 'var(--space-3)', border: '1px solid var(--ink-tertiary)', borderRadius: '0.5rem', cursor: 'pointer', transition: 'background-color var(--dur-mid) var(--ease-out)' }}>
               <input
                 type="checkbox"
                 checked={settings.notify_on_shipped}
                 onChange={(e) =>
                   setSettings({ ...settings, notify_on_shipped: e.target.checked })
                 }
-                className="w-4 h-4"
+                style={{ width: '1rem', height: '1rem' }}
               />
               <div>
-                <div className="font-medium text-gray-900">Order Shipped</div>
-                <div className="text-sm text-gray-600">
+                <div style={{ fontWeight: 600, color: 'var(--ink-primary)' }}>Order Shipped</div>
+                <div style={{ fontSize: '0.875rem', color: 'var(--ink-secondary)' }}>
                   Notify customers when their order is shipped
                 </div>
               </div>
             </label>
 
-            <label className="flex items-center gap-3 p-3 border border-gray-200 rounded-lg hover:bg-gray-50 cursor-pointer">
+            <label style={{ display: 'flex', alignItems: 'center', gap: 'var(--space-3)', padding: 'var(--space-3)', border: '1px solid var(--ink-tertiary)', borderRadius: '0.5rem', cursor: 'pointer', transition: 'background-color var(--dur-mid) var(--ease-out)' }}>
               <input
                 type="checkbox"
                 checked={settings.notify_on_delivered}
@@ -194,11 +191,11 @@ export default function NotificationsPage() {
                     notify_on_delivered: e.target.checked,
                   })
                 }
-                className="w-4 h-4"
+                style={{ width: '1rem', height: '1rem' }}
               />
               <div>
-                <div className="font-medium text-gray-900">Order Delivered</div>
-                <div className="text-sm text-gray-600">
+                <div style={{ fontWeight: 600, color: 'var(--ink-primary)' }}>Order Delivered</div>
+                <div style={{ fontSize: '0.875rem', color: 'var(--ink-secondary)' }}>
                   Notify customers when their order is delivered
                 </div>
               </div>
@@ -208,17 +205,17 @@ export default function NotificationsPage() {
 
         {/* Service Credentials Status */}
         <div>
-          <h2 className="text-xl font-semibold text-gray-900 mb-4">Service Status</h2>
-          <div className="space-y-2 text-sm">
-            <div className="flex items-center justify-between p-3 bg-green-50 border border-green-200 rounded-lg">
-              <span className="text-gray-900">Resend API (Email)</span>
-              <span className="text-green-700 font-medium">
+          <h2 className={styles.actionsTitle}>Service Status</h2>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-2)', fontSize: '0.875rem' }}>
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: 'var(--space-3)', backgroundColor: 'var(--color-success)', border: `1px solid var(--color-success)`, borderRadius: '0.5rem' }}>
+              <span style={{ color: 'var(--color-surface)' }}>Resend API (Email)</span>
+              <span style={{ color: 'var(--color-surface)', fontWeight: 600 }}>
                 {process.env.NEXT_PUBLIC_RESEND_CONFIGURED ? '✓ Configured' : '○ Not configured'}
               </span>
             </div>
-            <div className="flex items-center justify-between p-3 bg-green-50 border border-green-200 rounded-lg">
-              <span className="text-gray-900">Twilio (SMS/WhatsApp)</span>
-              <span className="text-green-700 font-medium">
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: 'var(--space-3)', backgroundColor: 'var(--color-success)', border: `1px solid var(--color-success)`, borderRadius: '0.5rem' }}>
+              <span style={{ color: 'var(--color-surface)' }}>Twilio (SMS/WhatsApp)</span>
+              <span style={{ color: 'var(--color-surface)', fontWeight: 600 }}>
                 {process.env.NEXT_PUBLIC_TWILIO_CONFIGURED ? '✓ Configured' : '○ Not configured'}
               </span>
             </div>
@@ -228,11 +225,15 @@ export default function NotificationsPage() {
         {/* Messages */}
         {message && (
           <div
-            className={`p-3 rounded-lg text-sm font-medium ${
-              message.includes('success')
-                ? 'bg-green-50 text-green-700 border border-green-200'
-                : 'bg-red-50 text-red-700 border border-red-200'
-            }`}
+            style={{
+              padding: 'var(--space-3)',
+              borderRadius: '0.5rem',
+              fontSize: '0.875rem',
+              fontWeight: 600,
+              backgroundColor: message.includes('success') ? 'var(--color-success)' : 'var(--color-error)',
+              color: 'var(--color-surface)',
+              border: `1px solid ${message.includes('success') ? 'var(--color-success)' : 'var(--color-error)'}`,
+            }}
           >
             {message}
           </div>
@@ -242,7 +243,8 @@ export default function NotificationsPage() {
         <button
           onClick={handleSave}
           disabled={saving}
-          className="w-full bg-blue-600 hover:bg-blue-700 disabled:bg-gray-400 text-white font-medium py-2 px-4 rounded-lg transition-colors"
+          className={styles.buttonPrimary}
+          style={{ width: '100%', opacity: saving ? 0.6 : 1 }}
         >
           {saving ? 'Saving...' : 'Save Settings'}
         </button>

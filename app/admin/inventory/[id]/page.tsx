@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react';
 import { useRouter, useParams } from 'next/navigation';
 import Link from 'next/link';
+import styles from '../../admin.module.css';
 
 interface Product {
   id: string;
@@ -108,68 +109,59 @@ export default function ProductFormPage() {
   };
 
   if (loading) {
-    return <div className="text-center text-gray-500">Loading...</div>;
+    return <div className={styles.loadingMessage}>Loading...</div>;
   }
 
   return (
-    <div className="max-w-2xl">
-      <div className="flex items-center justify-between mb-6">
-        <h1 className="text-3xl font-bold text-gray-800">
+    <div style={{ maxWidth: '42rem' }}>
+      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 'var(--space-6)' }}>
+        <h1 className={styles.dashboardTitle}>
           {isNew ? 'Add New Product' : 'Edit Product'}
         </h1>
-        <Link
-          href="/admin/inventory"
-          className="text-gray-600 hover:text-gray-800"
-        >
+        <Link href="/admin/inventory" style={{ color: 'var(--ink-secondary)', textDecoration: 'none' }}>
           ← Back
         </Link>
       </div>
 
       {error && (
-        <div className="mb-6 p-4 bg-red-100 text-red-700 rounded-lg">
+        <div style={{ marginBottom: 'var(--space-6)', padding: 'var(--space-4)', backgroundColor: 'var(--color-error)', color: 'var(--color-surface)', borderRadius: '0.5rem' }}>
           {error}
         </div>
       )}
 
-      <form onSubmit={handleSubmit} className="bg-white rounded-lg shadow p-6 space-y-6">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <form onSubmit={handleSubmit} className={styles.actionsSection} style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-6)' }}>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))', gap: 'var(--space-6)' }}>
           {/* Name */}
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
-              Product Name *
-            </label>
+          <div className={styles.formGroup}>
+            <label className={styles.label}>Product Name *</label>
             <input
               type="text"
               name="name"
               value={form.name}
               onChange={handleChange}
               required
-              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-slate-500"
+              className={styles.input}
               placeholder="e.g., Vitamin C Serum"
             />
           </div>
 
           {/* SKU */}
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
-              SKU *
-            </label>
+          <div className={styles.formGroup}>
+            <label className={styles.label}>SKU *</label>
             <input
               type="text"
               name="sku"
               value={form.sku}
               onChange={handleChange}
               required
-              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-slate-500"
+              className={styles.input}
               placeholder="e.g., VIT-C-30ML"
             />
           </div>
 
           {/* Price */}
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
-              Price (Rs) *
-            </label>
+          <div className={styles.formGroup}>
+            <label className={styles.label}>Price (Rs) *</label>
             <input
               type="number"
               name="price"
@@ -177,22 +169,20 @@ export default function ProductFormPage() {
               onChange={handleChange}
               required
               step="0.01"
-              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-slate-500"
+              className={styles.input}
               placeholder="0.00"
             />
           </div>
 
           {/* Category */}
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
-              Category *
-            </label>
+          <div className={styles.formGroup}>
+            <label className={styles.label}>Category *</label>
             <select
               name="category"
               value={form.category}
               onChange={handleChange}
               required
-              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-slate-500"
+              className={styles.select}
             >
               <option value="">Select Category</option>
               {CATEGORIES.map((cat) => (
@@ -204,48 +194,42 @@ export default function ProductFormPage() {
           </div>
 
           {/* Stock */}
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
-              Stock Quantity
-            </label>
+          <div className={styles.formGroup}>
+            <label className={styles.label}>Stock Quantity</label>
             <input
               type="number"
               name="stock"
               value={form.stock}
               onChange={handleChange}
               min="0"
-              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-slate-500"
+              className={styles.input}
               placeholder="0"
             />
           </div>
 
           {/* Image URL */}
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
-              Image URL
-            </label>
+          <div className={styles.formGroup}>
+            <label className={styles.label}>Image URL</label>
             <input
               type="url"
               name="image"
               value={form.image}
               onChange={handleChange}
-              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-slate-500"
+              className={styles.input}
               placeholder="https://..."
             />
           </div>
         </div>
 
         {/* Description */}
-        <div>
-          <label className="block text-sm font-medium text-gray-700 mb-2">
-            Description
-          </label>
+        <div className={styles.formGroup}>
+          <label className={styles.label}>Description</label>
           <textarea
             name="description"
             value={form.description}
             onChange={handleChange}
             rows={4}
-            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-slate-500"
+            className={styles.textarea}
             placeholder="Product description..."
           />
         </div>
@@ -253,13 +237,11 @@ export default function ProductFormPage() {
         {/* Image Preview */}
         {form.image && (
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
-              Image Preview
-            </label>
+            <label className={styles.label}>Image Preview</label>
             <img
               src={form.image}
               alt={form.name}
-              className="w-48 h-48 object-cover rounded-lg"
+              style={{ width: '12rem', height: '12rem', objectFit: 'cover', borderRadius: '0.5rem' }}
               onError={(e) => {
                 (e.target as HTMLImageElement).style.display = 'none';
               }}
@@ -268,18 +250,16 @@ export default function ProductFormPage() {
         )}
 
         {/* Actions */}
-        <div className="flex gap-4 pt-4 border-t">
+        <div style={{ display: 'flex', gap: 'var(--space-4)', paddingTop: 'var(--space-4)', borderTop: '1px solid var(--ink-tertiary)' }}>
           <button
             type="submit"
             disabled={submitting}
-            className="px-6 py-2 bg-slate-800 text-white rounded-lg hover:bg-slate-700 disabled:bg-gray-400 transition-colors"
+            className={styles.buttonPrimary}
+            style={{ opacity: submitting ? 0.6 : 1 }}
           >
             {submitting ? 'Saving...' : isNew ? 'Create Product' : 'Update Product'}
           </button>
-          <Link
-            href="/admin/inventory"
-            className="px-6 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors"
-          >
+          <Link href="/admin/inventory" className={styles.buttonSecondary}>
             Cancel
           </Link>
         </div>

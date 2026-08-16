@@ -1,8 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { Button } from '@/components/ui/button';
-import { Card } from '@/components/ui/card';
+import styles from '../admin.module.css';
 
 interface Review {
   id: string;
@@ -93,90 +92,91 @@ export default function ReviewsPage() {
   };
 
   return (
-    <div className="space-y-6">
-      <div className="flex justify-between items-center">
-        <h1 className="text-3xl font-bold">Product Reviews</h1>
-        <div className="flex gap-2">
-          <Button
-            variant={filter === 'all' ? 'default' : 'outline'}
+    <div className={styles.dashboardContainer}>
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+        <h1 className={styles.dashboardTitle}>Product Reviews</h1>
+        <div style={{ display: 'flex', gap: 'var(--space-2)' }}>
+          <button
+            className={filter === 'all' ? styles.buttonPrimary : styles.buttonSecondary}
             onClick={() => setFilter('all')}
+            style={{ padding: 'var(--space-2) var(--space-4)', fontSize: '0.875rem' }}
           >
             All
-          </Button>
-          <Button
-            variant={filter === 'pending' ? 'default' : 'outline'}
+          </button>
+          <button
+            className={filter === 'pending' ? styles.buttonPrimary : styles.buttonSecondary}
             onClick={() => setFilter('pending')}
+            style={{ padding: 'var(--space-2) var(--space-4)', fontSize: '0.875rem' }}
           >
             Pending
-          </Button>
-          <Button
-            variant={filter === 'approved' ? 'default' : 'outline'}
+          </button>
+          <button
+            className={filter === 'approved' ? styles.buttonPrimary : styles.buttonSecondary}
             onClick={() => setFilter('approved')}
+            style={{ padding: 'var(--space-2) var(--space-4)', fontSize: '0.875rem' }}
           >
             Approved
-          </Button>
+          </button>
         </div>
       </div>
 
       {loading ? (
-        <div className="text-center py-8">Loading reviews...</div>
+        <div style={{ textAlign: 'center', padding: 'var(--space-8)', color: 'var(--ink-secondary)' }}>
+          Loading reviews...
+        </div>
       ) : reviews.length === 0 ? (
-        <Card className="p-8 text-center text-gray-500">
+        <div className={styles.actionsSection} style={{ padding: 'var(--space-8)', textAlign: 'center', color: 'var(--ink-secondary)' }}>
           No reviews found
-        </Card>
+        </div>
       ) : (
-        <div className="space-y-4">
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-4)' }}>
           {reviews.map(review => (
-            <Card key={review.id} className="p-4 space-y-3">
-              <div className="flex justify-between items-start">
-                <div className="flex-1">
-                  <div className="flex items-center gap-2">
-                    <span className="font-semibold">{review.title || 'Untitled'}</span>
-                    <span className="text-yellow-500">{'★'.repeat(review.rating)}{'☆'.repeat(5 - review.rating)}</span>
+            <div key={review.id} className={styles.actionsSection} style={{ padding: 'var(--space-4)', display: 'flex', flexDirection: 'column', gap: 'var(--space-3)' }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
+                <div style={{ flex: 1 }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--space-2)' }}>
+                    <span style={{ fontWeight: 600, color: 'var(--ink-primary)' }}>{review.title || 'Untitled'}</span>
+                    <span style={{ color: 'var(--color-warning)' }}>{'★'.repeat(review.rating)}{'☆'.repeat(5 - review.rating)}</span>
                   </div>
-                  <p className="text-sm text-gray-600">Product: {review.productId}</p>
-                  <p className="mt-2">{review.comment}</p>
-                  <p className="text-xs text-gray-500 mt-2">
+                  <p style={{ fontSize: '0.875rem', color: 'var(--ink-secondary)', margin: 0 }}>Product: {review.productId}</p>
+                  <p style={{ marginTop: 'var(--space-2)', color: 'var(--ink-primary)' }}>{review.comment}</p>
+                  <p style={{ fontSize: '0.75rem', color: 'var(--ink-tertiary)', marginTop: 'var(--space-2)', margin: 0 }}>
                     {new Date(review.createdAt).toLocaleDateString()}
                   </p>
                 </div>
-                <div className={`px-3 py-1 rounded text-sm font-medium ${
-                  review.isApproved
-                    ? 'bg-green-100 text-green-800'
-                    : 'bg-yellow-100 text-yellow-800'
-                }`}>
+                <div className={review.isApproved ? styles.badgeSuccess : styles.badgeWarning}>
                   {review.isApproved ? 'Approved' : 'Pending'}
                 </div>
               </div>
 
-              <div className="flex gap-2 pt-2">
+              <div style={{ display: 'flex', gap: 'var(--space-2)', paddingTop: 'var(--space-2)', borderTop: '1px solid var(--ink-quaternary)' }}>
                 {!review.isApproved && (
-                  <Button
-                    size="sm"
-                    className="bg-green-600 hover:bg-green-700"
+                  <button
+                    className={styles.buttonPrimary}
                     onClick={() => approveReview(review.id)}
+                    style={{ padding: 'var(--space-2) var(--space-4)', fontSize: '0.875rem' }}
                   >
                     Approve
-                  </Button>
+                  </button>
                 )}
                 {review.isApproved && (
-                  <Button
-                    size="sm"
-                    variant="outline"
+                  <button
+                    className={styles.buttonSecondary}
                     onClick={() => rejectReview(review.id)}
+                    style={{ padding: 'var(--space-2) var(--space-4)', fontSize: '0.875rem' }}
                   >
                     Reject
-                  </Button>
+                  </button>
                 )}
-                <Button
-                  size="sm"
-                  variant="destructive"
+                <button
+                  className={styles.buttonDanger}
                   onClick={() => deleteReview(review.id)}
+                  style={{ padding: 'var(--space-2) var(--space-4)', fontSize: '0.875rem' }}
                 >
                   Delete
-                </Button>
+                </button>
               </div>
-            </Card>
+            </div>
           ))}
         </div>
       )}
